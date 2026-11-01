@@ -1,0 +1,57 @@
+/* Shared aerospace cursor theme for every Drone Italia page. */
+@media(pointer:fine){
+ :root{--di-cursor-arrow:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22%23062239%22%20stroke%3D%22%23a3edff%22%20stroke-width%3D%221.7%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M5%202v25l6-6%205%209%204-2-5-9%209-1z%22%2F%3E%3C%2Fsvg%3E") 5 2,default;--di-cursor-hand:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22%23062239%22%20stroke%3D%22%23a3edff%22%20stroke-width%3D%221.7%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2016V4c0-3%205-3%205%200v9-3c0-3%204-3%204%200v3-1c0-3%204-3%204%200v3c0-3%204-3%204%200v7c0%204-3%205-3%208H13c0-3-3-5-5-8l-4-5c-2-3%202-5%204-2l4%204z%22%2F%3E%3C%2Fsvg%3E") 14 4,pointer;--di-cursor-text:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M10%204h12M16%204v24M10%2028h12%22%20stroke%3D%22%23062239%22%20stroke-width%3D%225%22%2F%3E%3Cpath%20d%3D%22M10%204h12M16%204v24M10%2028h12%22%20stroke%3D%22%23a3edff%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E") 16 16, text;--di-cursor-zoom:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%3E%3Cg%20stroke%3D%22white%22%20stroke-width%3D%224%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%228%22%2F%3E%3Cpath%20d%3D%22m18%2018%2010%2010M8%2012h8M12%208v8%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%2312374c%22%20stroke-width%3D%222%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%228%22%2F%3E%3Cpath%20d%3D%22m18%2018%2010%2010M8%2012h8M12%208v8%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 12 12,zoom-in;--di-cursor-blocked:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2212%22%20fill%3D%22%23062239%22%20stroke%3D%22%23a3edff%22%20stroke-width%3D%222%22%2F%3E%3Cpath%20d%3D%22m8%2024%2016-16%22%20stroke%3D%22%23a3edff%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E") 16 16, not-allowed}
+ html:root,html:root body,html:root body *{cursor:var(--di-cursor-arrow)!important}
+ html:root :is(a,a *,button,button *,summary,summary *,select,input[type=checkbox],input[type=radio],input[type=range],input[type=color],[role=button],[role=button] *,[role=tab],label:has(input)){cursor:var(--di-cursor-hand)!important}
+ html:root :is(input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]):not([type=reset]),textarea,[contenteditable=true],[role=textbox]){cursor:var(--di-cursor-text)!important}
+ html:root input::file-selector-button{cursor:var(--di-cursor-hand)!important}
+html:root :is(button){cursor:var(--di-cursor-hand)!important}
+html:root :is(button:disabled){cursor:var(--di-cursor-blocked)!important}
+html:root :is(.cover #photo-open){cursor:var(--di-cursor-zoom)!important}
+html:root :is(#journal-form [disabled]){cursor:var(--di-cursor-blocked)!important}
+html:root :is(body.journal-page,body.journal-page *){cursor:var(--di-cursor-arrow)!important}
+html:root :is(body.journal-page a,body.journal-page a *,body.journal-page button,body.journal-page button *,body.journal-page [role="button"],body.journal-page [role="button"] *,body.journal-page summary,body.journal-page summary *,body.journal-page select,body.journal-page input[type="checkbox"]){cursor:var(--di-cursor-hand)!important}
+html:root :is(body.journal-page input:not([type="checkbox"]):not([type="button"]):not([type="submit"]),body.journal-page textarea,body.journal-page [contenteditable="true"]){cursor:var(--di-cursor-text)!important}
+html:root :is(body.journal-page #photo-open,body.journal-page #photo-open img){cursor:var(--di-cursor-zoom)!important}
+html:root :is(body.journal-page :disabled,body.journal-page :disabled *){cursor:var(--di-cursor-blocked)!important}
+html:root :is(html,body,body *){cursor:var(--di-cursor-arrow)!important}
+html:root :is(body a,body a *,body button,body button *,body [role="button"],body [role="button"] *,body summary,body summary *,body select,body input[type="checkbox"]){cursor:var(--di-cursor-hand)!important}
+html:root :is(body input:not([type="checkbox"]):not([type="button"]):not([type="submit"]),body textarea,body [contenteditable="true"]){cursor:var(--di-cursor-text)!important}
+html:root :is(body #phone:has(img),body #phone:has(img) img){cursor:var(--di-cursor-zoom)!important}
+html:root :is(body :disabled,body :disabled *){cursor:var(--di-cursor-blocked)!important}
+html:root :is(body #menu.menu button,body #menu.menu button *,body #menu.menu a,body #menu.menu a *,body #menu.menu .app-dropdown .app-dropdown-toggle,body #menu.menu #di-download-link,body #menu.menu #di-support-link){cursor:var(--di-cursor-hand)!important}
+html:root :is(#menu.menu >button[data-id],
+#menu.menu .app-dropdown .app-dropdown-toggle,
+#menu.menu #di-download-link,#menu.menu :is(#di-support-link,#di-journal-link)){cursor:var(--di-cursor-hand)!important}
+html:root :is(#app-dropdown-panel button,
+#comments-page #di-compose-outside #di-compose-toggle){cursor:var(--di-cursor-hand)!important}
+html:root :is(html body #menu.menu #di-journal-link,html body #menu.menu #di-journal-link *){cursor:var(--di-cursor-hand)!important}
+html:root :is(body.di-support-aero .di-donate-card button:disabled){cursor:var(--di-cursor-blocked)!important}
+html:root :is(body #phone){cursor:var(--di-cursor-arrow)!important}
+html:root :is(summary){cursor:var(--di-cursor-hand)!important}
+html:root :is(.di-install-details summary){cursor:var(--di-cursor-hand)!important}
+html:root :is(html body #latest.di-latest-compact .di-release-notes-trigger){cursor:var(--di-cursor-hand)!important}
+html:root :is(html body .di-release-close){cursor:var(--di-cursor-hand)!important}
+html:root :is(.menu button){cursor:var(--di-cursor-hand)!important}
+html:root :is(.actions a,.actions button){cursor:var(--di-cursor-hand)!important}
+html:root :is(.device){cursor:var(--di-cursor-zoom)!important}
+html:root :is(.zoom-close){cursor:var(--di-cursor-hand)!important}
+html:root :is(#comments-form button){cursor:var(--di-cursor-blocked)!important}
+html:root :is(#app-dropdown-panel button){cursor:var(--di-cursor-hand)!important}
+html:root :is(.cm-reply-toggle){cursor:var(--di-cursor-hand)!important}
+html:root :is(.cm-reply-form button){cursor:var(--di-cursor-hand)!important}
+html:root :is(#di-compose-toggle){cursor:var(--di-cursor-hand)!important}
+html:root :is(#di-compose-outside #di-compose-toggle){cursor:var(--di-cursor-hand)!important}
+html:root :is(.di-edit-handle){cursor:var(--di-cursor-hand)!important}
+html:root :is(#di-editor-panel button){cursor:var(--di-cursor-hand)!important}
+html:root :is(#comments-form .di-consent-label){cursor:var(--di-cursor-hand)!important}
+html:root :is(#cm-auth button,#cm-cancel-reply){cursor:var(--di-cursor-hand)!important}
+html:root :is(#cm-auth button:disabled){cursor:var(--di-cursor-blocked)!important}
+html:root :is(#download-page summary){cursor:var(--di-cursor-hand)!important}
+html:root :is(#menu.menu #di-compose-outside #di-compose-toggle){cursor:var(--di-cursor-hand)!important}
+html:root :is(#cm-send:not(:disabled),#cm-more){cursor:var(--di-cursor-hand)!important}
+html:root :is(#di-modal-close){cursor:var(--di-cursor-hand)!important}
+html:root :is(#comments-page #di-compose-toggle){cursor:var(--di-cursor-hand)!important}
+html:root :is(html body #menu.menu>button[data-id],html body #menu.menu>button[data-id] *){cursor:var(--di-cursor-hand)!important}
+html:root :is(:disabled,:disabled *){cursor:var(--di-cursor-blocked)!important}
+}
