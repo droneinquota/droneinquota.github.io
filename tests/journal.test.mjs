@@ -30,3 +30,7 @@ test('Google gateway uncertain response prevents automatic resend',async()=>{Obj
 
 
 test('missing community binding fails closed without calling public Workers URL',async()=>{delete env.COMMUNITY;globalThis.fetch=async()=>{throw Error('public fetch must not run')};const r=await call('/me');assert.equal(r.status,503);assert.match((await r.json()).error,/Collegamento community/)});
+
+test('health probes bound community without forwarding any authentication',async()=>{env.COMMUNITY={fetch:async r=>{assert.equal(r.headers.has('Authorization'),false);return Response.json({authenticated:false,canPost:false})}};const d=await(await call('/health')).json();assert.equal(d.communityCheck.ok,true);assert.equal(d.version,3)});
+test('community HTML response reports status without exposing body',async()=>{env.COMMUNITY={fetch:async()=>new Response('private internal error',{status:530})};const r=await call('/me');assert.equal(r.status,503);const d=await r.json();assert.match(d.error,/HTTP 530/);assert.equal(d.error.includes('private'),false)});
+test('community binding exception remains fail closed',async()=>{env.COMMUNITY={fetch:async()=>{throw Error('sensitive exception text')}};const r=await call('/me');assert.equal(r.status,503);assert.equal((await r.json()).error,'Collegamento community non riuscito (COMMUNITY_FETCH).')});

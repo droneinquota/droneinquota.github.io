@@ -15,7 +15,8 @@ function bearer(r){const token=r.headers.get('Authorization')?.match(/^Bearer ([
 async function hmac(value,secret){if(!secret||secret.length<32)fail(503,'Servizio non configurato.');const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);return [...new Uint8Array(await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(value)))].map(x=>x.toString(16).padStart(2,'0')).join('')}
 async function identity(request,env){
  const token=bearer(request);let r,d;
- try{r=await community(env,'/auth/me',{Authorization:'Bearer '+token,Origin:ORIGIN,'Cache-Control':'no-store'});d=await r.json()}catch(e){if(e instanceof HttpError)throw e;fail(503,'Verifica della sessione temporaneamente non disponibile.')}
+ try{r=await community(env,'/auth/me',{Authorization:'Bearer '+token,Origin:ORIGIN,'Cache-Control':'no-store'})}catch(e){if(e instanceof HttpError)throw e;fail(503,'Collegamento community non riuscito (COMMUNITY_FETCH).')}
+ try{d=await r.json()}catch{fail(503,'Risposta community non valida (HTTP '+r.status+').')}
  if(r.status===401||r.status===403||d.authenticated!==true)fail(401,'Sessione scaduta. Verifica nuovamente la tua email.');
  if(!r.ok)fail(503,'Servizio community non disponibile.');if(d.banned===true||d.canPost===false)fail(403,'Il tuo account non può inviare contenuti.');if(d.canPost!==true)fail(503,'Occorre completare i controlli di accesso community.');
  // Stable pseudonymous identity, returned only by the existing authenticated service.
@@ -86,7 +87,13 @@ async function notify(env){
 async function route(request,env,ctx){
  const u=new URL(request.url),path=u.pathname;if(request.method==='OPTIONS')return new Response(null,{status:204,headers:{'Access-Control-Allow-Origin':ORIGIN,'Access-Control-Allow-Methods':'GET,POST,PUT,OPTIONS','Access-Control-Allow-Headers':'Authorization,Content-Type,X-Journal-Admin,X-Rights-Consent,X-Privacy-Consent','Access-Control-Max-Age':'600','Vary':'Origin'}});
  if(!['GET','POST','PUT'].includes(request.method))fail(405,'Metodo non consentito.');if(request.method!=='GET'&&request.headers.get('Origin')!==ORIGIN)fail(403,'Richiesta non consentita.');
- if(path==='/health')return json({ok:true,service:'Drone Italia flight journal',version:2,sharedIdentityConfigured:typeof env.COMMUNITY?.fetch==='function',storage:'D1 bounded 100MiB',automaticModeration:!!env.OPENAI_API_KEY,notificationsConfigured:mailConfigured(env)});
+ if(path==='/health'){
+  let communityCheck={ok:false,code:'BINDING_MISSING'};
+  if(typeof env.COMMUNITY?.fetch==='function'){
+   try{const r=await community(env,'/auth/me',{Origin:ORIGIN,'Cache-Control':'no-store'});let d;try{d=await r.json()}catch{}communityCheck={ok:r.ok&&d?.authenticated===false,status:r.status,code:!r.ok?'UPSTREAM_HTTP_ERROR':d?.authenticated===false?'OK':'UPSTREAM_FORMAT'};}catch(e){communityCheck={ok:false,code:'BINDING_FETCH_FAILED',errorType:['TypeError','Error','TimeoutError','AbortError'].includes(e?.name)?e.name:'Error'};}
+  }
+  return json({ok:true,service:'Drone Italia flight journal',version:3,sharedIdentityConfigured:typeof env.COMMUNITY?.fetch==='function',communityCheck,storage:'D1 bounded 100MiB',automaticModeration:!!env.OPENAI_API_KEY,notificationsConfigured:mailConfigured(env)});
+ }
  if(!env.DB)fail(503,'Diario non ancora attivato.');
  if(path==='/flights'&&request.method==='GET'){const cursor=u.searchParams.get('before'),values=[];let condition="status='published'";if(cursor){if(!ID.test(cursor))fail(400,'Pagina non valida.');const f=await query(env,"SELECT published_at,id FROM journal_flights WHERE id=? AND status='published'",cursor).first();if(!f)fail(400,'Pagina non valida.');condition+=' AND (published_at<? OR (published_at=? AND id<?))';values.push(f.published_at,f.published_at,f.id)}const rows=(await query(env,'SELECT * FROM journal_flights WHERE '+condition+' ORDER BY published_at DESC,id DESC LIMIT 21',...values).all()).results||[];return json({flights:await Promise.all(rows.slice(0,20).map(f=>materialize(env,f))),nextCursor:rows.length>20?rows[19].id:null})}
  if(path.startsWith('/media/')&&request.method==='GET'){const id=path.slice(7);if(!ID.test(id))fail(404,'Foto non trovata.');const m=await query(env,'SELECT m.*,f.status FROM journal_media m LEFT JOIN journal_flights f ON f.id=m.flight_id WHERE m.id=?',id).first();if(!m)fail(404,'Foto non trovata.');if(m.status!=='published'){const isAdmin=request.headers.get('X-Journal-Admin')==='true';if(isAdmin)await admin(request,env);else{const who=await identity(request,env);if(who.owner!==m.owner)fail(404,'Foto non trovata.')}}return new Response(m.bytes,{headers:{'Content-Type':m.mime,'X-Content-Type-Options':'nosniff','Cache-Control':'no-store','Access-Control-Allow-Origin':ORIGIN,'Vary':'Origin'}})}
