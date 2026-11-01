@@ -48,8 +48,8 @@ diStyle.textContent=`
 #di-donate-custom-wrap[hidden],#di-donate-custom-error[hidden]{display:none!important}
 #di-donate-custom-error{color:#b42318}
 .di-donate-card select{box-sizing:border-box;width:100%;padding:12px;font-size:18px;border:1px solid #b5cce0;border-radius:10px;background:#fff;color:#183a50}
-.di-donate-card button{cursor:pointer}
-.di-donate-card button:disabled{opacity:.55;cursor:wait}
+.di-donate-card button{cursor:var(--di-cursor-hand, pointer)}
+.di-donate-card button:disabled{opacity:.55;cursor:var(--di-cursor-blocked, wait)}
 .di-donate-x{position:absolute;right:13px;top:12px;background:none;border:0;font-size:30px;color:#365c79}
 .di-donate-pay{display:block;width:100%;background:#0877d9;color:white;border:0;border-radius:10px;padding:13px;margin:15px 0 8px;font-weight:750;font-size:15px}
 .di-donate-secondary{display:block;width:100%;background:#e8f2fb;color:#18527e;border:1px solid #bdd4e6;border-radius:10px;padding:11px;margin-top:8px}

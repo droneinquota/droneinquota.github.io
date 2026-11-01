@@ -50,7 +50,7 @@ body.di-support-aero .di-donate-card button.di-donate-pay,body.di-support-aero .
 }
 body.di-support-aero .di-donate-card button.di-donate-secondary{background:linear-gradient(130deg,#133b55,#0c263c)!important;border-color:#4b92ae!important}
 body.di-support-aero .di-donate-card button.di-donate-pay:hover,body.di-support-aero .di-support-tabs button:hover{border-color:#b7f2ff!important;filter:brightness(1.1)}
-body.di-support-aero .di-donate-card button:disabled{opacity:.55!important;filter:none!important;cursor:not-allowed!important}
+body.di-support-aero .di-donate-card button:disabled{opacity:.55!important;filter:none!important;cursor:var(--di-cursor-blocked, not-allowed)!important}
 body.di-support-aero #di-donate-status,body.di-support-aero #di-monthly-status{color:#b8e9f6!important;line-height:1.65}
 body.di-support-aero .di-donate-card small,body.di-support-aero .di-donate-card .di-support-free{color:#a4c4d8!important;font-size:12px;line-height:1.65}
 body.di-support-aero .di-monthly-consent{color:#d4e6f3!important;font:400 14px/1.6 system-ui,sans-serif!important;text-transform:none!important;letter-spacing:0!important}

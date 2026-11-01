@@ -1,5 +1,5 @@
 /* Cursore lente vettoriale: segue il mouse sull’immagine. */
-body #phone{cursor:default!important}
-body #phone:has(img),body #phone:has(img) img{cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%3E%3Cg%20stroke%3D%22white%22%20stroke-width%3D%224%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%228%22%2F%3E%3Cpath%20d%3D%22m18%2018%2010%2010M8%2012h8M12%208v8%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%2312374c%22%20stroke-width%3D%222%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%228%22%2F%3E%3Cpath%20d%3D%22m18%2018%2010%2010M8%2012h8M12%208v8%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 12 12,zoom-in!important}
+body #phone{cursor:var(--di-cursor-arrow, default)!important}
+body #phone:has(img),body #phone:has(img) img{cursor:var(--di-cursor-zoom, zoom-in)!important}
 body #phone::before{display:none!important}
 body #phone:not(:has(img))::after{display:none!important}
