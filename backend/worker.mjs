@@ -6,10 +6,11 @@ class HttpError extends Error{constructor(status,message){super(message);this.st
 const fail=(s,m)=>{throw new HttpError(s,m)};
 const now=()=>new Date().toISOString();
 const json=(d,s=200)=>new Response(JSON.stringify(d),{status:s,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','Access-Control-Allow-Origin':ORIGIN,'Vary':'Origin','X-Content-Type-Options':'nosniff'}});
-async function remote(url,options={}){return fetch(url,{...options,signal:AbortSignal.timeout(12000),redirect:'error'})}
+async function rejectRedirect(r){if(r.status>=300&&r.status<400){await r.body?.cancel();throw new TypeError('Unexpected upstream redirect')}return r}
+async function remote(url,options={}){return rejectRedirect(await fetch(url,{...options,signal:AbortSignal.timeout(12000),redirect:'manual'}))}
 async function community(env,path,headers){
  if(!env.COMMUNITY||typeof env.COMMUNITY.fetch!=='function')fail(503,'Collegamento community non configurato.');
- return env.COMMUNITY.fetch(new Request(COMMENTS+path,{headers,signal:AbortSignal.timeout(12000),redirect:'error'}));
+ return rejectRedirect(await env.COMMUNITY.fetch(new Request(COMMENTS+path,{headers,signal:AbortSignal.timeout(12000),redirect:'manual'})));
 }
 function bearer(r){const token=r.headers.get('Authorization')?.match(/^Bearer ([a-f0-9]{64})$/i)?.[1];if(!token)fail(401,'Verifica la tua email per condividere un volo.');return token}
 async function hmac(value,secret){if(!secret||secret.length<32)fail(503,'Servizio non configurato.');const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);return [...new Uint8Array(await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(value)))].map(x=>x.toString(16).padStart(2,'0')).join('')}
@@ -92,7 +93,7 @@ async function route(request,env,ctx){
   if(typeof env.COMMUNITY?.fetch==='function'){
    try{const r=await community(env,'/auth/me',{Origin:ORIGIN,'Cache-Control':'no-store'});let d;try{d=await r.json()}catch{}communityCheck={ok:r.ok&&d?.authenticated===false,status:r.status,code:!r.ok?'UPSTREAM_HTTP_ERROR':d?.authenticated===false?'OK':'UPSTREAM_FORMAT'};}catch(e){communityCheck={ok:false,code:'BINDING_FETCH_FAILED',errorType:['TypeError','Error','TimeoutError','AbortError'].includes(e?.name)?e.name:'Error'};}
   }
-  return json({ok:true,service:'Drone Italia flight journal',version:3,sharedIdentityConfigured:typeof env.COMMUNITY?.fetch==='function',communityCheck,storage:'D1 bounded 100MiB',automaticModeration:!!env.OPENAI_API_KEY,notificationsConfigured:mailConfigured(env)});
+  return json({ok:true,service:'Drone Italia flight journal',version:4,sharedIdentityConfigured:typeof env.COMMUNITY?.fetch==='function',communityCheck,storage:'D1 bounded 100MiB',automaticModeration:!!env.OPENAI_API_KEY,notificationsConfigured:mailConfigured(env)});
  }
  if(!env.DB)fail(503,'Diario non ancora attivato.');
  if(path==='/flights'&&request.method==='GET'){const cursor=u.searchParams.get('before'),values=[];let condition="status='published'";if(cursor){if(!ID.test(cursor))fail(400,'Pagina non valida.');const f=await query(env,"SELECT published_at,id FROM journal_flights WHERE id=? AND status='published'",cursor).first();if(!f)fail(400,'Pagina non valida.');condition+=' AND (published_at<? OR (published_at=? AND id<?))';values.push(f.published_at,f.published_at,f.id)}const rows=(await query(env,'SELECT * FROM journal_flights WHERE '+condition+' ORDER BY published_at DESC,id DESC LIMIT 21',...values).all()).results||[];return json({flights:await Promise.all(rows.slice(0,20).map(f=>materialize(env,f))),nextCursor:rows.length>20?rows[19].id:null})}
