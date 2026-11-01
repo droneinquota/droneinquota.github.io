@@ -59,19 +59,20 @@ async function materialize(env,f,privateView=false){
  const out={id:f.id,title:f.title,author:f.nickname,story:f.body,date:f.flight_date,place:f.place,drone:f.drone,duration:f.duration,distance:f.distance,height:f.height,youtubeId:f.youtube_id,status:f.status,publishedAt:f.published_at,createdAt:f.created_at,updatedAt:f.updated_at,photos:m.filter(x=>x.kind==='photo').map(x=>x.id),avatar:m.find(x=>x.kind==='avatar')?.id||null,revision:f.revision};
  if(privateView)out.reviewReason=f.review_reason;return out;
 }
-async function ownerAction(request,env,owner,id,action){
- if(action!=='remove-video')fail(404,'Funzione non trovata.');
- const d=await body(request,2000);
- if(d.confirm!==true)fail(400,'Conferma richiesta.');
- const f=await query(env,'SELECT * FROM journal_flights WHERE id=? AND owner=?',id,owner).first();
+async function deleteOwnStory(request,env,owner,id){
+ const d=await body(request,2000);if(d.confirm!==true)fail(400,'Conferma eliminazione richiesta.');
+ const f=await query(env,'SELECT id,revision FROM journal_flights WHERE id=? AND owner=?',id,owner).first();
  if(!f)fail(404,'Racconto non trovato.');
  if(!Number.isInteger(d.revision)||d.revision!==f.revision)fail(409,'Il racconto è cambiato. Aggiorna e riprova.');
- if(!f.youtube_id)return json({ok:true,flight:await materialize(env,f,true)});
- const mutation=crypto.randomUUID(),stamp=now();
- const sql='UPDATE journal_flights SET youtube_id=NULL,updated_at=?,revision=revision+1,mutation=? WHERE id=? AND owner=? AND revision=?';
- const r=await env.DB.batch([query(env,sql,stamp,mutation,id,owner,d.revision),query(env,'INSERT INTO journal_audit(id,flight_id,action,reason,created_at) SELECT ?,?,?,?,? WHERE EXISTS(SELECT 1 FROM journal_flights WHERE id=? AND owner=? AND mutation=?)',crypto.randomUUID(),id,'owner_remove_video','Richiesta confermata dall’autore.',stamp,id,owner,mutation)]);
- if(!r[0].meta.changes)fail(409,'Il racconto è cambiato. Aggiorna e riprova.');
- return json({ok:true,flight:await materialize(env,await query(env,'SELECT * FROM journal_flights WHERE id=? AND owner=?',id,owner).first(),true)});
+ const guard='EXISTS(SELECT 1 FROM journal_flights WHERE id=? AND owner=? AND revision=?)';
+ const results=await env.DB.batch([
+  query(env,'DELETE FROM journal_media WHERE flight_id=? AND '+guard,id,id,owner,d.revision),
+  query(env,'DELETE FROM journal_mail WHERE flight_id=? AND '+guard,id,id,owner,d.revision),
+  query(env,'DELETE FROM journal_audit WHERE flight_id=? AND '+guard,id,id,owner,d.revision),
+  query(env,'DELETE FROM journal_flights WHERE id=? AND owner=? AND revision=?',id,owner,d.revision)
+ ]);
+ if(!results[3].meta.changes)fail(409,'Il racconto è cambiato. Aggiorna e riprova.');
+ return json({ok:true,deleted:true,id});
 }
 async function queue(env,id){await query(env,'INSERT OR IGNORE INTO journal_mail(id,flight_id) VALUES(?,?)',crypto.randomUUID(),id).run()}
 async function save(request,env,owner,id=null){
@@ -107,7 +108,7 @@ async function route(request,env,ctx){
   if(typeof env.COMMUNITY?.fetch==='function'){
    try{const r=await community(env,'/auth/me',{Origin:ORIGIN,'Cache-Control':'no-store'});let d;try{d=await r.json()}catch{}communityCheck={ok:r.ok&&d?.authenticated===false,status:r.status,code:!r.ok?'UPSTREAM_HTTP_ERROR':d?.authenticated===false?'OK':'UPSTREAM_FORMAT'};}catch(e){communityCheck={ok:false,code:'BINDING_FETCH_FAILED',errorType:['TypeError','Error','TimeoutError','AbortError'].includes(e?.name)?e.name:'Error'};}
   }
-  return json({ok:true,service:'Drone Italia flight journal',version:7,ownerActions:true,sharedIdentityConfigured:typeof env.COMMUNITY?.fetch==='function',communityCheck,storage:'D1 bounded 100MiB',automaticModeration:!!env.OPENAI_API_KEY,notificationsConfigured:mailConfigured(env)});
+  return json({ok:true,service:'Drone Italia flight journal',version:8,ownerActions:true,ownerDelete:true,sharedIdentityConfigured:typeof env.COMMUNITY?.fetch==='function',communityCheck,storage:'D1 bounded 100MiB',automaticModeration:!!env.OPENAI_API_KEY,notificationsConfigured:mailConfigured(env)});
  }
  if(!env.DB)fail(503,'Diario non ancora attivato.');
  if(path==='/flights'&&request.method==='GET'){const cursor=u.searchParams.get('before'),values=[];let condition="status='published'";if(cursor){if(!ID.test(cursor))fail(400,'Pagina non valida.');const f=await query(env,"SELECT published_at,id FROM journal_flights WHERE id=? AND status='published'",cursor).first();if(!f)fail(400,'Pagina non valida.');condition+=' AND (published_at<? OR (published_at=? AND id<?))';values.push(f.published_at,f.published_at,f.id)}const rows=(await query(env,'SELECT * FROM journal_flights WHERE '+condition+' ORDER BY published_at DESC,id DESC LIMIT 21',...values).all()).results||[];return json({flights:await Promise.all(rows.slice(0,20).map(f=>materialize(env,f))),nextCursor:rows.length>20?rows[19].id:null})}
@@ -123,7 +124,7 @@ async function route(request,env,ctx){
  const who=await identity(request,env);
  if(path==='/me'&&request.method==='GET')return json({authenticated:true,rightsVersion:RIGHTS});
  if(path==='/mine'&&request.method==='GET'){const rows=(await query(env,'SELECT * FROM journal_flights WHERE owner=? ORDER BY created_at DESC LIMIT 100',who.owner).all()).results||[];return json({flights:await Promise.all(rows.map(f=>materialize(env,f,true)))})}
- const ownerMatch=path.match(/^\/flights\/([a-f0-9-]{36})\/(remove-video)$/i);if(ownerMatch&&request.method==='POST')return ownerAction(request,env,who.owner,ownerMatch[1],ownerMatch[2]);
+ const ownerMatch=path.match(/^\/flights\/([a-f0-9-]{36})\/(delete)$/i);if(ownerMatch&&request.method==='POST')return deleteOwnStory(request,env,who.owner,ownerMatch[1]);
  if(path==='/media'&&request.method==='POST')return upload(request,env,who.owner);
  if(path==='/flights'&&request.method==='POST'){const r=await save(request,env,who.owner);ctx.waitUntil(notify(env));return r}
  const match=path.match(/^\/flights\/([a-f0-9-]{36})$/i);if(match&&request.method==='PUT'){const r=await save(request,env,who.owner,match[1]);ctx.waitUntil(notify(env));return r}
