@@ -33,14 +33,14 @@ function confirmOwnerAction(title,text){
 }
 function ownerControls(f){
  const box=$('journal-owner-controls');box.replaceChildren();if(!ownerActions)return;
- const note=document.createElement('p');note.className='media-note';note.textContent=f.status==='hidden'?'Questo racconto è già ritirato o nascosto: gli altri visitatori non possono vederlo.':f.status==='published'?'Il racconto è pubblico. Puoi togliere il video oppure ritirare tutto il racconto.':'Il racconto non è pubblico. Puoi modificarlo, togliere il video o ritirarlo.';
+ const note=document.createElement('p');note.className='media-note';note.textContent=f.status==='hidden'?'Questo racconto è già ritirato o nascosto: gli altri visitatori non possono vederlo.':f.status==='published'?'Il racconto è pubblico. Puoi rimuovere il video; testo e foto resteranno pubblicati.':'Il racconto non è pubblico. Puoi modificarlo o rimuovere il video.';
  if(!f.youtubeId)note.textContent+=' Non contiene un video YouTube.';box.append(note);
- for(const [action,title]of [...(f.youtubeId?[['remove-video','Rimuovi video']]:[]),...(f.status!=='hidden'?[['withdraw','Ritira racconto']]:[])]){
+ for(const [action,title]of (f.youtubeId?[['remove-video','Rimuovi video']]:[])){
   const b=document.createElement('button');b.type='button';b.className='primary';b.textContent=title;
   b.onclick=async()=>{
-   if(busy)return;busy=true;const question=action==='remove-video'?'Rimuovere il video da questo racconto? Testo e foto resteranno. Il video su YouTube non sarà eliminato.':'Ritirare questo racconto? Testo, foto e video non saranno più visibili al pubblico.';
-   if(!await confirmOwnerAction(action==='remove-video'?'Rimuovi video':'Ritira racconto',question)){busy=false;return}b.disabled=true;
-   try{const d=await api('/flights/'+f.id+'/'+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({confirm:true,revision:f.revision})});if(!d.ok)throw Error('Operazione non confermata.');$('journal-pending-dialog').close();message('journal-submit-confirmation',action==='remove-video'?'Video rimosso dal racconto.':'Racconto ritirato: non è più pubblico.');await refresh()}catch(e){$('journal-pending-text').textContent=e.message}finally{busy=false;b.disabled=false}
+   if(busy)return;busy=true;const question='Rimuovere il video da questo racconto? Testo e foto resteranno. Il video originale su YouTube non sarà eliminato.';
+   if(!await confirmOwnerAction('Rimuovi video',question)){busy=false;return}b.disabled=true;
+   try{const d=await api('/flights/'+f.id+'/'+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({confirm:true,revision:f.revision})});if(!d.ok)throw Error('Operazione non confermata.');$('journal-pending-dialog').close();message('journal-submit-confirmation','Video rimosso dal racconto. Testo e foto sono stati mantenuti.');await refresh()}catch(e){$('journal-pending-text').textContent=e.message}finally{busy=false;b.disabled=false}
   };box.append(b);
  }
 }
