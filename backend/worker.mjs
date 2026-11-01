@@ -100,6 +100,23 @@ async function notify(env){
   }catch(e){await query(env,"UPDATE journal_mail SET state='failed',error_code=? WHERE id=?",/^(PROVIDER_\d+|GAS_REJECTED|GAS_CONFIG)$/.test(e.message)?e.message:'SEND_UNCONFIRMED',item.id).run()}
  }
 }
+
+const DEFAULT_SITE_MESSAGE='Stiamo aggiornando Drone Italia. Torneremo online appena possibile.';
+async function siteState(env){
+ await env.DB.prepare('CREATE TABLE IF NOT EXISTS journal_site_state (id INTEGER PRIMARY KEY CHECK(id=1), enabled INTEGER NOT NULL DEFAULT 0 CHECK(enabled IN (0,1)), message TEXT NOT NULL, revision INTEGER NOT NULL DEFAULT 0, updated_at TEXT NOT NULL)').run();
+ await query(env,'INSERT OR IGNORE INTO journal_site_state(id,enabled,message,revision,updated_at) VALUES(1,0,?,0,?)',DEFAULT_SITE_MESSAGE,now()).run();
+ const row=await query(env,'SELECT enabled,message,revision,updated_at FROM journal_site_state WHERE id=1').first();
+ return {enabled:row.enabled===1,message:row.message,revision:row.revision,updatedAt:row.updated_at};
+}
+async function setSiteState(request,env){
+ const d=await body(request,2000);
+ if(d.confirm!==true||typeof d.enabled!=='boolean'||!Number.isInteger(d.revision)||d.revision<0)fail(400,'Conferma e stato validi richiesti.');
+ const message=clean(d.message,10,300,'Messaggio');await siteState(env);
+ const r=await query(env,'UPDATE journal_site_state SET enabled=?,message=?,revision=revision+1,updated_at=? WHERE id=1 AND revision=?',d.enabled?1:0,message,now(),d.revision).run();
+ if(!r.meta?.changes)fail(409,'Stato cambiato da un altro pannello. Aggiorna e riprova.');
+ return json({ok:true,...await siteState(env)});
+}
+
 async function route(request,env,ctx){
  const u=new URL(request.url),path=u.pathname;if(request.method==='OPTIONS')return new Response(null,{status:204,headers:{'Access-Control-Allow-Origin':ORIGIN,'Access-Control-Allow-Methods':'GET,POST,PUT,OPTIONS','Access-Control-Allow-Headers':'Authorization,Content-Type,X-Journal-Admin,X-Rights-Consent,X-Privacy-Consent','Access-Control-Max-Age':'600','Vary':'Origin'}});
  if(!['GET','POST','PUT'].includes(request.method))fail(405,'Metodo non consentito.');if(request.method!=='GET'&&request.headers.get('Origin')!==ORIGIN)fail(403,'Richiesta non consentita.');
@@ -108,13 +125,16 @@ async function route(request,env,ctx){
   if(typeof env.COMMUNITY?.fetch==='function'){
    try{const r=await community(env,'/auth/me',{Origin:ORIGIN,'Cache-Control':'no-store'});let d;try{d=await r.json()}catch{}communityCheck={ok:r.ok&&d?.authenticated===false,status:r.status,code:!r.ok?'UPSTREAM_HTTP_ERROR':d?.authenticated===false?'OK':'UPSTREAM_FORMAT'};}catch(e){communityCheck={ok:false,code:'BINDING_FETCH_FAILED',errorType:['TypeError','Error','TimeoutError','AbortError'].includes(e?.name)?e.name:'Error'};}
   }
-  return json({ok:true,service:'Drone Italia flight journal',version:8,ownerActions:true,ownerDelete:true,sharedIdentityConfigured:typeof env.COMMUNITY?.fetch==='function',communityCheck,storage:'D1 bounded 100MiB',automaticModeration:!!env.OPENAI_API_KEY,notificationsConfigured:mailConfigured(env)});
+  return json({ok:true,service:'Drone Italia flight journal',version:9,siteMaintenance:true,ownerActions:true,ownerDelete:true,sharedIdentityConfigured:typeof env.COMMUNITY?.fetch==='function',communityCheck,storage:'D1 bounded 100MiB',automaticModeration:!!env.OPENAI_API_KEY,notificationsConfigured:mailConfigured(env)});
  }
  if(!env.DB)fail(503,'Diario non ancora attivato.');
+ if(path==='/site-status'&&request.method==='GET')return json(await siteState(env));
  if(path==='/flights'&&request.method==='GET'){const cursor=u.searchParams.get('before'),values=[];let condition="status='published'";if(cursor){if(!ID.test(cursor))fail(400,'Pagina non valida.');const f=await query(env,"SELECT published_at,id FROM journal_flights WHERE id=? AND status='published'",cursor).first();if(!f)fail(400,'Pagina non valida.');condition+=' AND (published_at<? OR (published_at=? AND id<?))';values.push(f.published_at,f.published_at,f.id)}const rows=(await query(env,'SELECT * FROM journal_flights WHERE '+condition+' ORDER BY published_at DESC,id DESC LIMIT 21',...values).all()).results||[];return json({flights:await Promise.all(rows.slice(0,20).map(f=>materialize(env,f))),nextCursor:rows.length>20?rows[19].id:null})}
  if(path.startsWith('/media/')&&request.method==='GET'){const id=path.slice(7);if(!ID.test(id))fail(404,'Foto non trovata.');const m=await query(env,'SELECT m.*,f.status FROM journal_media m LEFT JOIN journal_flights f ON f.id=m.flight_id WHERE m.id=?',id).first();if(!m)fail(404,'Foto non trovata.');if(m.status!=='published'){const isAdmin=request.headers.get('X-Journal-Admin')==='true';if(isAdmin)await admin(request,env);else{const who=await identity(request,env);if(who.owner!==m.owner)fail(404,'Foto non trovata.')}}return new Response(Array.isArray(m.bytes)?new Uint8Array(m.bytes):m.bytes,{headers:{'Content-Type':m.mime,'X-Content-Type-Options':'nosniff','Cache-Control':'no-store','Access-Control-Allow-Origin':ORIGIN,'Vary':'Origin'}})}
  if(path.startsWith('/admin/')){
   await admin(request,env);
+  if(path==='/admin/site-status'&&request.method==='GET')return json(await siteState(env));
+  if(path==='/admin/site-status'&&request.method==='POST')return setSiteState(request,env);
   if(path==='/admin/flights'&&request.method==='GET'){const rows=(await query(env,'SELECT * FROM journal_flights ORDER BY created_at DESC LIMIT 100').all()).results||[];return json({flights:await Promise.all(rows.map(f=>materialize(env,f,true)))})}
   if(path==='/admin/notifications'&&request.method==='GET')return json({notifications:(await query(env,'SELECT id,flight_id,state,attempts,last_attempt,sent_at,error_code FROM journal_mail ORDER BY rowid DESC LIMIT 100').all()).results||[]});
   if(path==='/admin/notifications/retry'&&request.method==='POST'){ctx.waitUntil(notify(env));return json({ok:true})}
