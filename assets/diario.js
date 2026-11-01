@@ -25,7 +25,7 @@ $('photo-prev').addEventListener('click',()=>stepPhoto(-1));$('photo-next').addE
 $('large-prev').addEventListener('click',()=>stepPhoto(-1));$('large-next').addEventListener('click',()=>stepPhoto(1));
 $('photo-open').addEventListener('click',()=>openDialog($('photo-dialog')));
 $('photo-dialog').addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();stepPhoto(e.key==='ArrowRight'?1:-1)}});
-function mergeFlights(){flights=[...publicFlights,...ownFlights.filter(f=>!publicFlights.some(p=>p.id===f.id)),...demoFlights];renderList()}
+function mergeFlights(){flights=[...publicFlights,...ownFlights.filter(f=>!publicFlights.some(p=>p.id===f.id)),...demoFlights];if(!selected.isDemo){const fresh=publicFlights.find(f=>f.id===selected.id);select(fresh||publicFlights[0]||demoFlights[0])}else renderList()}
 document.addEventListener('di-journal-public',e=>{publicFlights=e.detail;mergeFlights()});document.addEventListener('di-journal-own',e=>{ownFlights=e.detail;mergeFlights()});
 $('search').addEventListener('input',renderList);select(flights.find(f=>'#'+f.id===location.hash)||flights[0]);
 
