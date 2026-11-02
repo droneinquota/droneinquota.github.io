@@ -7,7 +7,7 @@ diModal.id='di-donate-modal';
 diModal.innerHTML=`<section class="di-donate-card" role="dialog" aria-modal="true" aria-labelledby="di-donate-title">
 <button type="button" class="di-donate-x" id="di-donate-close" aria-label="Chiudi">×</button>
 <h2 id="di-donate-title">Sostieni il progetto</h2>
-<p class="di-support-intro">Scegli come far crescere Drone Italia.</p>
+<p class="di-support-intro">Scegli come far crescere Drone in Quota.</p>
 <div class="di-support-tabs" role="tablist" aria-label="Tipo di sostegno">
 <button type="button" role="tab" id="di-tab-single" data-support-tab="single" aria-controls="di-support-single" aria-selected="true"><span aria-hidden="true">❤️</span>Donazione singola</button>
 <button type="button" role="tab" id="di-tab-monthly" data-support-tab="monthly" aria-controls="di-support-monthly" aria-selected="false" tabindex="-1"><span aria-hidden="true">💛</span>Sostegno mensile</button>
