@@ -12,7 +12,22 @@ function renderMaintenance(container,message,preview=false){
  if(!preview){const a=document.createElement('a');a.href='admin.html';a.className='di-maintenance-admin';a.textContent='Area amministratore';page.append(a)}container.append(page);return page;
 }
 function preview(){renderMaintenance($('site-preview-content'),$('site-message').value.trim()||defaultMessage,true);$('site-preview-dialog').showModal()}
-$('site-preview').addEventListener('click',preview);$('site-preview-close').addEventListener('click',()=>$('site-preview-dialog').close());$('site-refresh').addEventListener('click',loadSite);
+$('site-preview').addEventListener('click',preview);
+const previewButton=document.createElement('button');previewButton.type='button';previewButton.className='secondary';previewButton.textContent='↗ ANTEPRIMA SITO';
+$('site-preview').insertAdjacentElement('afterend',previewButton);
+previewButton.addEventListener('click',async()=>{
+ if(!key||!site){$('site-status').textContent='Accedi e aggiorna lo stato del sito.';return}
+ const tab=window.open('about:blank','_blank');
+ if(!tab){$('site-status').textContent='Consenti le finestre popup per aprire l’anteprima.';return}
+ try{
+  tab.document.title='Preparazione anteprima…';tab.document.body.textContent='Preparazione anteprima Drone in Quota…';
+  const data=await api(API,'/admin/preview-token',{});
+  if(!/^[a-f0-9]{64}$/i.test(data.token))throw Error('Codice anteprima non valido.');
+  tab.name='di-preview:'+data.token;
+  tab.location.replace(new URL('index.html',location.href).href);
+  $('site-status').textContent='Anteprima aperta in una nuova scheda. Scade dopo 30 minuti.';
+ }catch(e){tab.close();$('site-status').textContent='Anteprima non disponibile: '+e.message}
+});$('site-preview-close').addEventListener('click',()=>$('site-preview-dialog').close());$('site-refresh').addEventListener('click',loadSite);
 function confirm(enabled){if(!site||!key)return;const message=$('site-message').value.trim();if(message.length<10||message.length>300){$('site-status').textContent='Inserisci un messaggio tra 10 e 300 caratteri.';return}action={enabled,message,revision:site.revision,confirm:true};$('site-confirm-title').textContent=enabled?'Attivare la manutenzione?':'Rimettere online il sito?';$('site-confirm-text').textContent=enabled?'La Home sarà sostituita dall’avviso di manutenzione per i visitatori. Le pagine già aperte saranno aggiornate al successivo caricamento. Il pannello resterà accessibile.':'La Home normale tornerà visibile ai visitatori al successivo caricamento.';$('site-confirm-yes').textContent=enabled?'Attiva manutenzione':'Rimetti online';$('site-confirm').showModal();$('site-cancel').focus()}
 $('site-enable').addEventListener('click',()=>confirm(true));$('site-disable').addEventListener('click',()=>confirm(false));$('site-cancel').addEventListener('click',()=>{action=null;$('site-confirm').close()});$('site-confirm').addEventListener('cancel',()=>action=null);$('site-confirm-yes').addEventListener('click',async()=>{if(!action||!key)return;const data=action;action=null;$('site-confirm-yes').disabled=true;try{site=await api(API,'/admin/site-status',data);drawSite();$('site-confirm').close()}catch(e){$('site-status').textContent=e.message;$('site-confirm').close();await loadSite()}finally{$('site-confirm-yes').disabled=false}});
 document.addEventListener('di-admin-session',e=>{key=e.detail.key;$('hub-shell').hidden=false;$('hub-exit').hidden=false;queueMicrotask(()=>{const id=location.hash.slice(1);if(/^[a-f0-9-]{36}$/i.test(id)){show('journal');document.dispatchEvent(new CustomEvent('di-admin-review-flight',{detail:{id}}))}else show('overview')});overview()});document.addEventListener('di-admin-lock',()=>{key='';generation++;site=null;action=null;$('hub-shell').hidden=true;$('hub-exit').hidden=true;$('hub-queue').replaceChildren();for(const d of document.querySelectorAll('dialog[open]'))d.close()});$('hub-exit').addEventListener('click',()=>document.dispatchEvent(new CustomEvent('di-admin-signout')));$('hub-refresh').addEventListener('click',overview);

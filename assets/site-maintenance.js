@@ -4,4 +4,15 @@
  page.querySelector('.di-maintenance-message').textContent=message==='Stiamo aggiornando Drone in Quota. Torneremo online appena possibile.'?message.replace('. Torneremo','.\nTorneremo'):message;
  if(!preview){const a=document.createElement('a');a.href='admin.html';a.className='di-maintenance-admin';a.textContent='Area amministratore';page.append(a)}container.append(page);return page;
 }
-async function check(){let state=null;try{const r=await fetch('https://drone-italia-diario.turni-vigilanza-pdura.workers.dev/site-status',{cache:'no-store',credentials:'omit',signal:AbortSignal.timeout(4000)});if(r.ok)state=await r.json()}catch{}try{if(state?.enabled===true){if(document.readyState==='loading')await new Promise(resolve=>document.addEventListener('DOMContentLoaded',resolve,{once:true}));if(!document.getElementById('di-maintenance-page')){const host=document.createElement('div'),page=renderMaintenance(host,typeof state.message==='string'?state.message:'Stiamo aggiornando Drone in Quota. Torneremo online appena possibile.');document.body.prepend(page);document.documentElement.classList.add('di-maintenance-active');document.title='Manutenzione — Drone in Quota'}}}finally{clearTimeout(window.diSiteGateTimeout);document.documentElement.classList.remove('di-site-checking')}}check();window.addEventListener('pageshow',e=>{if(e.persisted)location.reload()});})();
+async function authorizedPreview(){
+ let token='';
+ try{
+  if(window.name.startsWith('di-preview:')){token=window.name.slice(11);window.name='';if(/^[a-f0-9]{64}$/i.test(token))sessionStorage.setItem('di-preview-token',token)}
+  token=sessionStorage.getItem('di-preview-token')||'';
+  if(!/^[a-f0-9]{64}$/i.test(token))return false;
+  const r=await fetch('https://drone-italia-diario.turni-vigilanza-pdura.workers.dev/preview/verify',{headers:{Authorization:'Bearer '+token},cache:'no-store',credentials:'omit',signal:AbortSignal.timeout(4000)});
+  if(r.ok)return true;
+  sessionStorage.removeItem('di-preview-token');return false;
+ }catch{return false}
+}
+async function check(){let state=null;try{const r=await fetch('https://drone-italia-diario.turni-vigilanza-pdura.workers.dev/site-status',{cache:'no-store',credentials:'omit',signal:AbortSignal.timeout(4000)});if(r.ok)state=await r.json()}catch{}try{if(state?.enabled===true&&!(await authorizedPreview())){if(document.readyState==='loading')await new Promise(resolve=>document.addEventListener('DOMContentLoaded',resolve,{once:true}));if(!document.getElementById('di-maintenance-page')){const host=document.createElement('div'),page=renderMaintenance(host,typeof state.message==='string'?state.message:'Stiamo aggiornando Drone in Quota. Torneremo online appena possibile.');document.body.prepend(page);document.documentElement.classList.add('di-maintenance-active');document.title='Manutenzione — Drone in Quota'}}}finally{clearTimeout(window.diSiteGateTimeout);document.documentElement.classList.remove('di-site-checking')}}check();window.addEventListener('pageshow',e=>{if(e.persisted)location.reload()});})();
