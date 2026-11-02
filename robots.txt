@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://droneinquota.github.io/sitemap.xml
