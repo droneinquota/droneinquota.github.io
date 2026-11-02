@@ -2,7 +2,7 @@
  message=message.replace(/Drone Italia/g,'Drone in Quota');container.replaceChildren();const page=document.createElement('section');page.className='di-maintenance-page';if(!preview)page.id='di-maintenance-page';
  page.innerHTML='<header class="di-maintenance-header"><span class="di-maintenance-brand">DRONE IN QUOTA<i></i></span><span>'+ ''+'</span></header><div class="di-maintenance-main"><div class="di-maintenance-drone"><img src="assets/maintenance-drone-v1.webp" alt="Drone in Quota"></div><section class="di-maintenance-card"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4a6 6 0 0 1-8 8l-8 9-3-3 9-8a6 6 0 0 1 8-8l-4 4 3 3Z"/></svg><p class="di-maintenance-eyebrow">AGGIORNAMENTO DEL SISTEMA</p><h2>MANUTENZIONE IN CORSO</h2><p class="di-maintenance-message"></p><p class="di-maintenance-thanks">Grazie per la pazienza.</p></section></div><footer class="di-maintenance-footer">DRONE IN QUOTA · LA PASSIONE DEL VOLO</footer>';
  page.querySelector('.di-maintenance-message').textContent=message==='Stiamo aggiornando Drone in Quota. Torneremo online appena possibile.'?message.replace('. Torneremo','.\nTorneremo'):message;
- if(!preview){const a=document.createElement('a');a.href='admin.html';a.className='di-maintenance-admin';a.textContent='Area amministratore';page.append(a)}container.append(page);return page;
+container.append(page);return page;
 }
 async function authorizedPreview(){
  let token='';
