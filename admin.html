@@ -152,6 +152,7 @@ Torneremo online appena possibile.</textarea><div class="actions"><button id="si
    }else{
     head.append(el('strong',item.nickname||'Utente'),el('span',labels[item.status]||item.status,'badge '+item.status));
     card.append(head,el('p','#'+item.id+(tab==='replies'?' · Risposta a #'+item.comment_id:'')+' · '+date(item.created_at),'meta'),el('p',item.body||'','body'),el('p','Violazioni confermate dell’account: '+(item.strikes||0)+' · Nuove dopo il ban: '+(item.post_ban_strikes||0),'meta'));
+    if(item.contact_available && typeof item.email==='string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item.email))card.append(el('p','Email verificata: '+item.email,'meta'));
     if(!item.contact_available)card.append(el('p','Email verificata non disponibile. Gli avvisi saranno possibili dopo un nuovo accesso con Magic Link, quando l’account non è bloccato. I ban e i conteggi restano efficaci.','hint'));
     if(item.status!=='published')actions.append(button(item.status==='deleted'?'Ripristina':'Approva','',()=>ask('approve',item)));
     if(item.status!=='deleted')actions.append(button('Nascondi senza violazione','secondary',()=>ask('delete',item)));
