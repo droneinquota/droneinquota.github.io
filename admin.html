@@ -65,6 +65,7 @@ html:root :is(:disabled,:disabled *){cursor:var(--di-cursor-blocked)!important}
 
 @media(any-pointer:fine){dialog::backdrop{cursor:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAC10lEQVRYhc2XX0gUQRzHL6G1q4googeJYCuzsgexl0XPjiKyCBIMCjMwkBIMRCrESLR6qTDsRDNF83ZGJUwjqV4kqofspVIIMioqNOTUnT1Dhf7t7Ddm71YuCEG4m/rBsOz8dpnP7/f7zm92PZ7/zQjDVWqinYSw7J8AUBPvqAkQxgeDDCn/BCA4aUFA6IYV6jSQKR2gdmgE2SVVuBX6YRPGv3eEUSAdQFE1bM07gaaPU5ww2NREDYBFUgEUVUOKLx9XXnwSACAMt7tH4ZUKoKgaVqTvxtm+AUcXlOF51zjWSgVQVA1LNmWh6Ea3A0EM/jloYptUACU69py+jODEL1s3rNmOMA5IB1BUDRkFZWgZmeHE4JyYqJAOoKga1vkPo3ZoxBEnZWhuBhZLBVBUDasycnG+fzAiThP97VNYKRVAUTUsTctBCXkY6ZyMf6AGNksFUKJj/7k6sTugT1pT1IBfOoCiatCKK9E29s0mBv9JGIqkAyiqhg25xxAYHo+I00SgGkhKuAZSfPlIzy9BTmkNDl5oRHnPE1eYzg5JCEBhoAuN75kb6V+HblgThOFaQgDKuh9H2jLDEDFRLxoSCeMoDcPX+RVqAEhe0MLzAXhTfShu7XPOAndu/a4jCE5Yts74qwXXeSEA3lQfynufzqV1+6HSOd/xm72R+TAKEwLgjVmcmHikG9y6NPDWTt6Y5fhXZ+5Dy+isrU9aX+L2nUCjAH8szvBA1JSaaBD3O0/VzGUh72KT+0xl3ADqXo/FRn7XPWjaprGGMD5dPzzOl2/xOwDiGngTEsfzjPDHBYBG6+1GHusXkQqfiNzNgshI9J2GuAGQmMhjTdSaGHxU1F5oQAAITQhtCI10GkiLx59R63znu1C9gBS7wM3C3opat2R3PIm2aiCJmHgp+kD2ySqcufcMhNmiZKIzBjwyjBrwx2jFJgz3dQM7PDKNmLhOTfRIXzie9htWHIst/ha2YwAAAABJRU5ErkJggg==") 5 2,default!important}}
 
+.admin-author{min-width:0;max-width:100%}.admin-email-contact{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin-top:7px;padding:7px 10px;border-left:3px solid #ffd45c;background:rgba(255,196,48,.08);font-size:13px}.admin-email-label{color:#ffe29a}.admin-email-contact a{color:#ffd45c!important;text-decoration:underline;text-underline-offset:3px}.admin-email-address{overflow-wrap:anywhere}.admin-email-write{font-weight:700;white-space:nowrap}.admin-email-contact a:focus-visible{outline:2px solid #ffd45c;outline-offset:3px}
 </style>
 
 <title>Centro di controllo — Drone in Quota</title>
@@ -150,9 +151,20 @@ Torneremo online appena possibile.</textarea><div class="actions"><button id="si
     card.append(head,el('p','Creato '+date(item.created_at)+' · Tentativi: '+item.attempts+(item.sent_at?' · Inviato '+date(item.sent_at):''),'meta'));
     if(item.last_error)card.append(el('p',item.last_error,'hint'));
    }else{
-    head.append(el('strong',item.nickname||'Utente'),el('span',labels[item.status]||item.status,'badge '+item.status));
+    const author=el('div',undefined,'admin-author');
+    author.append(el('strong',item.nickname||'Utente'));
+    if(item.contact_available && typeof item.email==='string' && item.email.length<=254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item.email)){
+     const contact=el('div',undefined,'admin-email-contact');
+     contact.append(el('span','Email verificata:','admin-email-label'));
+     const address=el('a',item.email,'admin-email-address');
+     address.href='mailto:'+encodeURIComponent(item.email);
+     address.title='Scrivi un messaggio a questo autore';
+     const write=el('a','Scrivi email ↗','admin-email-write');
+     write.href=address.href;
+     contact.append(address,write);author.append(contact);
+    }
+    head.append(author,el('span',labels[item.status]||item.status,'badge '+item.status));
     card.append(head,el('p','#'+item.id+(tab==='replies'?' · Risposta a #'+item.comment_id:'')+' · '+date(item.created_at),'meta'),el('p',item.body||'','body'),el('p','Violazioni confermate dell’account: '+(item.strikes||0)+' · Nuove dopo il ban: '+(item.post_ban_strikes||0),'meta'));
-    if(item.contact_available && typeof item.email==='string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item.email))card.append(el('p','Email verificata: '+item.email,'meta'));
     if(!item.contact_available)card.append(el('p','Email verificata non disponibile. Gli avvisi saranno possibili dopo un nuovo accesso con Magic Link, quando l’account non è bloccato. I ban e i conteggi restano efficaci.','hint'));
     if(item.status!=='published')actions.append(button(item.status==='deleted'?'Ripristina':'Approva','',()=>ask('approve',item)));
     if(item.status!=='deleted')actions.append(button('Nascondi senza violazione','secondary',()=>ask('delete',item)));
