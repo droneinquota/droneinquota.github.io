@@ -72,7 +72,7 @@ html:root :is(:disabled,:disabled *){cursor:var(--di-cursor-blocked)!important}
 <style>
 :root{color-scheme:dark;font:15px system-ui,-apple-system,"Segoe UI",sans-serif;color:#e8f5ff;background:#06162a}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#164269,#06162a 75%);line-height:1.55}header,main{max-width:1040px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;align-items:center;gap:15px;border-bottom:1px solid #315f80}header strong{letter-spacing:.1em;font-size:13px}a{color:#9bdbff}h1{font-size:clamp(25px,4vw,34px);line-height:1.2;margin:8px 0 12px}h2{font-size:20px;margin:0 0 12px}p{color:#bcd7e9}.panel{background:#092743;border:1px solid #39759e;border-radius:16px;padding:24px;margin:20px 0}#login-panel{max-width:620px;margin:30px auto}label{display:block;font-weight:700;font-size:13px;margin:12px 0 5px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:11px;border-radius:8px;border:1px solid #73a6c6;background:#fff;color:#102a3e}button{border:1px solid #65b8ed;border-radius:9px;padding:10px 15px;background:#1976bd;color:#fff;cursor:var(--di-cursor-hand, pointer);font-weight:700}button:hover{filter:brightness(1.12)}button:disabled{opacity:.55;cursor:var(--di-cursor-blocked, wait)}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #80d4ff;outline-offset:3px}.secondary{background:#173e5e;border-color:#4c7f9f}.danger{background:#763242;border-color:#cf8190}.toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px}.toolbar p{margin:0;font-size:13px}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 15px}.tabs button[aria-pressed="true"]{background:#4daedc;color:#06253c;border-color:#a4e7ff}.filters{display:flex;gap:15px;align-items:end;flex-wrap:wrap}.filters>div{flex:1;min-width:180px}.hint{font-size:13px;color:#9ebfd5}.status{min-height:24px;overflow-wrap:anywhere}#login-status{color:#ffbbc1}.item{background:#103652;border:1px solid #39759e;border-radius:12px;padding:18px;margin:14px 0;overflow-wrap:anywhere}.item-head{display:flex;justify-content:space-between;align-items:start;gap:12px;flex-wrap:wrap}.item strong{color:#fff}.meta{font-size:12px;color:#a5c5d9;margin:5px 0}.body{white-space:pre-wrap;color:#e8f5ff}.badge{font-size:12px;font-weight:750;border-radius:999px;border:1px solid #648daa;padding:3px 10px;background:#183e5b}.badge.pending{color:#ffe5a0;border-color:#b29656}.badge.deleted{color:#ffbac5;border-color:#9c5f70}.badge.published{color:#b6f2d6;border-color:#509879}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.actions button{font-size:13px;padding:8px 12px}.hash{font:12px ui-monospace,monospace;word-break:break-all;color:#a8c9df}dialog{background:#0d2c47;color:#e8f5ff;border:1px solid #5794b8;border-radius:16px;width:min(520px,calc(100vw - 28px));padding:24px}dialog::backdrop{background:#000b}dialog p{white-space:pre-wrap;overflow-wrap:anywhere}dialog .actions{justify-content:flex-end}[hidden]{display:none!important}@media(max-width:600px){header,main{padding:16px}.panel{padding:18px}.toolbar{align-items:flex-start}button{min-height:42px}}
 .site-footer{position:fixed;bottom:0;left:0;right:0;padding:8px 12px;text-align:center;font-size:12px;color:#b2d0e5;background:rgba(4,23,42,.94)}main{padding-bottom:55px}.access-banner{border:1px solid #b6914a;background:#483b20;color:#ffe6ae;padding:12px 14px;border-radius:9px;font-size:14px;margin:0 0 20px}</style>
-<link rel="stylesheet" href="assets/journal-admin.css?v=2"><link rel="stylesheet" href="assets/admin-hub.css?v=sfondo-v3"><link rel="stylesheet" href="assets/site-maintenance.css?v=sfondo-v3"><link rel="stylesheet" href="assets/site-brand.css?v=1"><link rel="stylesheet" href="assets/admin-mail.css?v=compact-2"></head>
+<link rel="stylesheet" href="assets/journal-admin.css?v=2"><link rel="stylesheet" href="assets/admin-hub.css?v=sfondo-v3"><link rel="stylesheet" href="assets/site-maintenance.css?v=sfondo-v3"><link rel="stylesheet" href="assets/site-brand.css?v=1"><link rel="stylesheet" href="assets/admin-mail.css?v=compact-2"><style>#confirm-dialog{max-height:88dvh;overflow:auto}#purge-notify-wrap .purge-notify-label{display:flex;gap:10px;align-items:flex-start;font-weight:600;font-size:14px}#purge-notify{width:18px;height:18px;min-height:18px;flex:none;accent-color:#4dc6df;margin:2px 0 0}#purge-notify-info{overflow-wrap:anywhere}</style></head>
 <body>
 <header class="hub-header"><a class="hub-brand" href="./" aria-label="Drone in Quota — Home"><span class="hub-wordmark">DRONE IN QUOTA<i aria-hidden="true"></i></span></a><strong>CENTRO DI CONTROLLO · AMMINISTRAZIONE</strong><a class="hub-visit" href="./" target="_blank" rel="noopener"><span aria-hidden="true">↗</span> Visita il sito</a><button id="hub-exit" hidden>Esci</button></header>
 <main>
@@ -89,14 +89,14 @@ Torneremo online appena possibile.</textarea><div class="actions"><button id="si
 <section id="manual-ban" class="panel" hidden><h2>Blocca un indirizzo IP</h2><p class="hint">Per IPv4 o IPv6 esatti. Un IP può essere condiviso da più persone. Il blocco del solo IP non permette di inviare un avviso email.</p><form id="manual-ban-form"><label for="manual-ip">Indirizzo IP</label><input id="manual-ip" required maxlength="45" placeholder="IPv4 o IPv6"><label for="manual-type">Tipo</label><select id="manual-type"><option value="temporary">Ban temporaneo</option><option value="permanent">Ban permanente</option></select><button type="submit">Configura ban IP</button></form></section><button id="retry-mail" type="button" class="secondary" hidden>Riprova avvisi falliti</button><p id="workspace-status" class="status" role="status" aria-live="polite"></p><div id="items" aria-live="polite"></div>
 </section>
 </div></div></main><footer class="site-footer" aria-label="Informazioni sul sito">DRONE IN QUOTA · AREA RISERVATA</footer>
-<dialog id="confirm-dialog" aria-labelledby="confirm-title"><h2 id="confirm-title"></h2><p id="confirm-text"></p><div id="duration-wrap" hidden><label for="ban-days">Durata</label><select id="ban-days"><option value="1">1 giorno</option><option value="7" selected>7 giorni</option><option value="30">30 giorni</option></select></div><div id="scope-wrap" hidden><label for="ban-scope">Applica il ban a</label><select id="ban-scope"><option value="account">Solo account</option><option value="both">Account e IP del messaggio</option><option value="ip">Solo IP del messaggio</option></select><p class="hint">Il blocco IP può coinvolgere altre persone sulla stessa rete. Gli avvisi sono inviati solo quando è disponibile un’email verificata e il ban include l’account.</p></div><div id="reason-wrap" hidden><label for="reason">Motivazione per l’avviso</label><textarea id="reason" minlength="3" maxlength="300" rows="3" required></textarea></div><div class="actions"><button id="confirm-cancel" class="secondary" type="button">Annulla</button><button id="confirm-submit" type="button">Conferma</button></div></dialog>
+<dialog id="confirm-dialog" aria-labelledby="confirm-title"><h2 id="confirm-title"></h2><p id="confirm-text"></p><div id="duration-wrap" hidden><label for="ban-days">Durata</label><select id="ban-days"><option value="1">1 giorno</option><option value="7" selected>7 giorni</option><option value="30">30 giorni</option></select></div><div id="scope-wrap" hidden><label for="ban-scope">Applica il ban a</label><select id="ban-scope"><option value="account">Solo account</option><option value="both">Account e IP del messaggio</option><option value="ip">Solo IP del messaggio</option></select><p class="hint">Il blocco IP può coinvolgere altre persone sulla stessa rete. Gli avvisi sono inviati solo quando è disponibile un’email verificata e il ban include l’account.</p></div><div id="reason-wrap" hidden><label for="reason">Motivazione per l’avviso</label><textarea id="reason" minlength="3" maxlength="300" rows="3" required></textarea></div><div id="purge-notify-wrap" hidden><label class="purge-notify-label"><input id="purge-notify" type="checkbox" checked> Avvisa l’autore del messaggio selezionato via email</label><p id="purge-notify-info" class="hint"></p></div><div class="actions"><button id="confirm-cancel" class="secondary" type="button">Annulla</button><button id="confirm-submit" type="button">Conferma</button></div></dialog>
 <dialog id="admin-review" aria-labelledby="admin-review-title"><div class="dialog-top"><h2 id="admin-review-title"></h2><button id="admin-review-close" aria-label="Chiudi revisione">✕</button></div><div id="admin-review-content"></div><label>Motivazione per rifiuto o sospensione<textarea id="admin-reason" maxlength="300" rows="3"></textarea></label><div class="toolbar"><button id="admin-approve" class="primary">Approva e pubblica</button><button id="admin-reject">Richiedi correzioni</button><button id="admin-hide">Nascondi dalla pagina</button></div><p id="admin-action-status" role="status"></p></dialog><dialog id="site-confirm"><h2 id="site-confirm-title"></h2><p id="site-confirm-text"></p><div class="actions"><button id="site-cancel" class="secondary" autofocus>Annulla</button><button id="site-confirm-yes">Conferma</button></div></dialog><dialog id="site-preview-dialog"><button id="site-preview-close" aria-label="Chiudi anteprima">✕</button><div id="site-preview-content"></div></dialog><script>
 (()=>{
  'use strict';
  const API='https://drone-italia-commenti.turni-vigilanza-pdura.workers.dev',$=id=>document.getElementById(id);
  const labels={published:'Pubblicato',pending:'In attesa',deleted:'Rimosso'};
- const mailLabels={pending:'In coda',sending:'Invio in corso',sent:'Inviato',failed:'Invio fallito',unavailable:'Serve nuovo accesso email',cancelled:'Annullato'};
- const eventLabels={moderated:'Messaggio moderato',temporary_ban:'Ban temporaneo',permanent_ban:'Ban permanente'};
+ const mailLabels={accepted:'Accettato da Outlook',processing:'Invio in corso',uncertain:'Esito incerto: verifica Posta inviata',not_requested:'Avviso non richiesto',pending:'In coda',sending:'Invio in corso',sent:'Inviato',failed:'Invio fallito',unavailable:'Avviso non disponibile',cancelled:'Annullato'};
+ const eventLabels={permanently_deleted:'Messaggio eliminato definitivamente',moderated:'Messaggio moderato',temporary_ban:'Ban temporaneo',permanent_ban:'Ban permanente'};
  let key='',tab='comments',rows=[],busy=false,requestId=0,confirmAction=null;
  const stamp=new Intl.DateTimeFormat('it-IT',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Rome'});
  function date(v){const d=new Date(v);return Number.isNaN(d.getTime())?'Data non disponibile':stamp.format(d);}
@@ -109,7 +109,7 @@ Torneremo online appena possibile.</textarea><div class="actions"><button id="si
   if($('confirm-dialog').open)$('confirm-dialog').close();setBusy(false);
  }
  async function api(path,body){
-  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),path.endsWith('/purge')?45000:20000);
   try{
    const r=await fetch(API+path,{method:body===undefined?'GET':'POST',headers:{Authorization:'Bearer '+key,...(body===undefined?{}:{'Content-Type':'application/json'})},...(body===undefined?{}:{body:JSON.stringify(body)}),signal:controller.signal,cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer'});
    let d;try{d=await r.json();}catch{throw Error('Risposta del servizio non valida.');}
@@ -119,20 +119,37 @@ Torneremo online appena possibile.</textarea><div class="actions"><button id="si
  }
  function failure(e){return e.name==='AbortError'?'Tempo scaduto: aggiorna l’elenco prima di ripetere l’operazione.':e.message||'Servizio non disponibile.';}
  function button(text,cls,fn){const b=el('button',text,cls);b.type='button';b.disabled=busy;b.addEventListener('click',fn);return b;}
- function ask(action,item){
-  if(busy)return;confirmAction={action,item,tab};
+ async function ask(action,item){
+  if(busy)return;
+  let purgeInfo=null;const auth=key;
+  if(action==='purge'){
+   setBusy(true);$('workspace-status').textContent='Controllo del messaggio e dell’avviso…';
+   try{
+    purgeInfo=await api('/admin/'+tab+'/'+item.id+'/purge-preview');
+    if(!key||key!==auth)return;
+    if(!/^[a-f0-9]{64}$/.test(purgeInfo.fingerprint||'')||!Number.isSafeInteger(purgeInfo.replyCount))throw Error('Risposta eliminazione non valida.');
+   }catch(e){if(key)$('workspace-status').textContent=failure(e)+' Se la funzione non è disponibile, completa prima l’aggiornamento del Worker.';return;}
+   finally{setBusy(false);}
+  }
+  confirmAction={action,item,tab,purgeInfo,requestId:action==='purge'?crypto.randomUUID():null};
   const ban=['temporary','permanent','manualban'].includes(action),manual=action==='manualban',moderate=action==='moderate';
   const type=manual?item.type:action;
   $('duration-wrap').hidden=!ban||type!=='temporary';$('scope-wrap').hidden=!ban||manual;
-  $('reason-wrap').hidden=!ban&&!moderate;$('reason').value='';$('ban-scope').value='account';$('ban-days').value='7';
+  const purge=action==='purge';
+  $('reason-wrap').hidden=!ban&&!moderate&&!purge;$('reason').maxLength=purge?1000:300;$('reason').minLength=purge?10:3;$('reason').value=purge?purgeInfo.defaultReason:'';$('ban-scope').value='account';$('ban-days').value='7';
+  $('purge-notify-wrap').hidden=!purge;
+  $('purge-notify').checked=purge?purgeInfo.canNotify===true:false;$('purge-notify').disabled=purge?purgeInfo.canNotify!==true:false;
+  $('purge-notify-info').textContent=purge?(purgeInfo.canNotify?'Avviso da droneinquota@outlook.com a '+purgeInfo.verifiedEmail+'. Puoi modificare la motivazione qui sopra.':purgeInfo.notificationUnavailable||'Avviso email non disponibile.') : '';
+
   if(ban){$('confirm-title').textContent=type==='temporary'?'Ban temporaneo':'Ban permanente';$('confirm-text').textContent=(manual?'IP: '+item.ip:'Utente del messaggio #'+item.id)+'\n\nIl ban impedisce nuovi invii. Non elimina automaticamente gli altri messaggi. Il ban permanente non ha scadenza, ma può essere revocato.';}
   else if(moderate){$('confirm-title').textContent='Conferma violazione e avvisa';$('confirm-text').textContent='Il messaggio #'+item.id+' sarà nascosto e conterà come una violazione. Cinque violazioni confermate causano un ban di 7 giorni; altre cinque nuove violazioni dopo la scadenza causano un ban permanente. Ripetere la conferma dello stesso messaggio non aumenta il conteggio.';}
+  else if(purge){$('confirm-title').textContent='Elimina definitivamente';$('confirm-text').textContent='Messaggio #'+item.id+' · '+(item.nickname||'Utente')+'\n'+String(item.body||'').slice(0,180)+'\n\nIl messaggio sarà cancellato dal database e non potrà essere ripristinato.'+(tab==='comments'?' Verranno eliminate anche '+purgeInfo.replyCount+' risposte collegate.':' Il commento principale resterà presente.')+'\nNon verranno aggiunte violazioni né applicati ban. Eventuali violazioni e ban già registrati restano validi.\nL’avviso riguarda solo l’autore del messaggio selezionato. Un problema di invio non annulla la cancellazione.';}
   else if(action==='delete'){$('confirm-title').textContent='Nascondi senza violazione';$('confirm-text').textContent='Il messaggio #'+item.id+' sarà nascosto senza aggiungere violazioni e senza inviare email. Potrai ripristinarlo.';}
   else if(action==='approve'){$('confirm-title').textContent='Pubblica il messaggio';$('confirm-text').textContent='Il messaggio #'+item.id+' sarà visibile pubblicamente. Eventuali violazioni e ban già applicati non saranno annullati.';}
-  else if(action==='retry'){$('confirm-title').textContent='Riprova avvisi falliti';$('confirm-text').textContent='Gli avvisi falliti torneranno in coda. Quelli già inviati non saranno ripetuti. Gli account senza un contatto verificato richiedono un nuovo accesso con Magic Link.';}
+  else if(action==='retry'){$('confirm-title').textContent='Riprova avvisi falliti';$('confirm-text').textContent='Gli avvisi di moderazione falliti torneranno in coda. Questo comando non include gli avvisi di eliminazione definitiva. Quelli già inviati non saranno ripetuti. Gli account senza un contatto verificato richiedono un nuovo accesso con Magic Link.';}
   else{$('confirm-title').textContent='Revoca ban';$('confirm-text').textContent='Questo ban verrà revocato. Eventuali altri ban attivi continueranno a valere. I messaggi rimossi non saranno ripristinati.';}
-  $('confirm-submit').textContent=moderate?'Modera e avvisa':ban?'Applica ban':action==='revoke'?'Revoca ban':action==='retry'?'Riprova':'Conferma';
-  $('confirm-submit').className=ban||moderate||action==='delete'?'danger':'';$('confirm-dialog').showModal();$('confirm-cancel').focus();
+  $('confirm-submit').textContent=purge?'Elimina definitivamente':moderate?'Modera e avvisa':ban?'Applica ban':action==='revoke'?'Revoca ban':action==='retry'?'Riprova':'Conferma';
+  $('confirm-submit').className=ban||moderate||action==='delete'||purge?'danger':'';$('confirm-dialog').showModal();$('confirm-cancel').focus();
  }
  function render(){
   const q=$('search').value.trim().toLocaleLowerCase('it-IT'),status=$('status-filter').value;
@@ -172,6 +189,7 @@ Torneremo online appena possibile.</textarea><div class="actions"><button id="si
     if(!item.contact_available)card.append(el('p','Email verificata non disponibile. Gli avvisi saranno possibili dopo un nuovo accesso con Magic Link, quando l’account non è bloccato. I ban e i conteggi restano efficaci.','hint'));
     if(item.status!=='published')actions.append(button(item.status==='deleted'?'Ripristina':'Approva','',()=>ask('approve',item)));
     if(item.status!=='deleted')actions.append(button('Nascondi senza violazione','secondary',()=>ask('delete',item)));
+    actions.append(button('Elimina definitivamente','danger',()=>ask('purge',item)));
     if(!item.violation_id)actions.append(button('Modera e avvisa','danger',()=>ask('moderate',item)));
     else card.append(el('p','Questo messaggio è già conteggiato come violazione.','hint'));
     actions.append(button('Ban temporaneo','secondary',()=>ask('temporary',item)),button('Ban permanente','danger',()=>ask('permanent',item)));
@@ -182,7 +200,7 @@ Torneremo online appena possibile.</textarea><div class="actions"><button id="si
  function view(){
   document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===tab)));
   $('filter-wrap').hidden=!['comments','replies'].includes(tab);$('manual-ban').hidden=tab!=='bans';$('retry-mail').hidden=tab!=='notifications';
-  $('scope').textContent=tab==='notifications'?'Ultimi 100 avvisi. Gli invii vengono ritentati automaticamente; la coda rispetta la quota del servizio email.':tab==='bans'?'Ultimi 100 ban. Un IP è conservato come impronta protetta, non è possibile ricostruire quelli storici.':'Ultimi 100 messaggi. Solo “Modera e avvisa” conta come violazione. I filtri automatici mettono soltanto in attesa.';
+  $('scope').textContent=tab==='notifications'?'Ultimi 100 avvisi. Gli avvisi di moderazione possono essere ritentati. Per l’eliminazione definitiva controlla l’esito; gli invii incerti non sono ritentati automaticamente.':tab==='bans'?'Ultimi 100 ban. Un IP è conservato come impronta protetta, non è possibile ricostruire quelli storici.':'Ultimi 100 messaggi. Solo “Modera e avvisa” conta come violazione. I filtri automatici mettono soltanto in attesa.';
  }
  async function load(){
   if(busy||!key)return false;const id=++requestId,resource=tab;setBusy(true);$('workspace-status').textContent='Caricamento…';
@@ -204,16 +222,22 @@ Torneremo online appena possibile.</textarea><div class="actions"><button id="si
  $('retry-mail').addEventListener('click',()=>ask('retry',{}));
  $('confirm-cancel').addEventListener('click',()=>{confirmAction=null;$('confirm-dialog').close();});$('confirm-dialog').addEventListener('cancel',()=>{confirmAction=null;});
  $('confirm-submit').addEventListener('click',async()=>{
-  if(busy||!confirmAction||!key)return;const {action,item,tab:resource}=confirmAction;
+  if(busy||!confirmAction||!key)return;const {action,item,tab:resource,purgeInfo,requestId:purgeRequestId}=confirmAction;
   const ban=['temporary','permanent','manualban'].includes(action),moderate=action==='moderate';
-  if((ban||moderate)&&!$('reason').reportValidity())return;
+  if((ban||moderate||(action==='purge'&&$('purge-notify').checked))&&!$('reason').reportValidity())return;
   let path,body={};
   if(ban){path='/admin/bans';body={type:action==='manualban'?item.type:action,days:Number($('ban-days').value),reason:$('reason').value.trim(),scope:action==='manualban'?'ip':$('ban-scope').value,...(action==='manualban'?{ip:item.ip}:{kind:resource,itemId:item.id})};}
   else if(action==='revoke'){path='/admin/bans/'+encodeURIComponent(item.id)+'/revoke';body={system:item.system};}
   else if(action==='retry')path='/admin/notifications/retry';
+  else if(action==='purge'){path='/admin/'+resource+'/'+item.id+'/purge';body={confirm:true,notify:$('purge-notify').checked,reason:$('reason').value.trim(),fingerprint:purgeInfo.fingerprint,expectedRecipient:purgeInfo.verifiedEmail,requestId:purgeRequestId};}
   else{path='/admin/'+resource+'/'+item.id+'/'+action;if(moderate)body.reason=$('reason').value.trim();}
   confirmAction=null;$('confirm-dialog').close();$('reason').value='';setBusy(true);$('workspace-status').textContent='Operazione in corso…';
-  try{const result=await api(path,body);if(result.ok!==true)throw Error('Operazione non confermata.');setBusy(false);const refreshed=await load();if(key&&refreshed)$('workspace-status').textContent='Operazione completata. Controlla “Avvisi email” per l’esito degli invii.';}
+  try{const result=await api(path,body);if(result.ok!==true)throw Error('Operazione non confermata.');setBusy(false);const refreshed=await load();if(key&&refreshed){
+    if(action==='purge'){
+     const outcomes={accepted:'Avviso accettato da Outlook; il recapito finale non è ancora confermato.',not_requested:purgeInfo?.canNotify?'Avviso non richiesto.':'Avviso non inviato: '+(purgeInfo?.notificationUnavailable||'Contatto non disponibile.'),pending:'Avviso in coda. Controlla Avvisi email.',processing:'Avviso in elaborazione. Controlla Avvisi email.',failed:'Avviso non inviato. Controlla Avvisi email.',unavailable:'Avviso non disponibile. Controlla Avvisi email.',uncertain:'Esito dell’avviso incerto: controlla Posta inviata prima di contattare l’autore.'};
+     $('workspace-status').textContent='Messaggio eliminato definitivamente.'+(result.deletedReplies?' Eliminate anche '+result.deletedReplies+' risposte.':'')+' '+(outcomes[result.notification?.state]||'Controlla Avvisi email per l’esito.');
+    }else $('workspace-status').textContent='Operazione completata. Controlla “Avvisi email” per l’esito degli invii.';
+   }}
   catch(e){if(key)$('workspace-status').textContent=failure(e);}finally{setBusy(false);}
  });
  document.addEventListener('di-admin-tab',e=>{if(busy||!key)return;tab=e.detail.tab;rows=[];$('search').value=e.detail.search||'';$('status-filter').value=e.detail.pending?'pending':'all';view();load();});
@@ -222,6 +246,7 @@ Torneremo online appena possibile.</textarea><div class="actions"><button id="si
 })();
 </script>
 <dialog id="mail-compose-dialog" aria-labelledby="mail-compose-title"><form id="mail-compose" class="mail-compose"><div class="mail-compose-heading"><h2 id="mail-compose-title">Nuovo messaggio</h2><button id="mail-compose-x" type="button" class="secondary" aria-label="Chiudi nuovo messaggio">×</button></div><p class="hint">Mittente: droneinquota@outlook.com</p><label for="mail-new-to">Destinatario</label><input id="mail-new-to" type="email" required maxlength="254" autocomplete="off"><label for="mail-new-subject">Oggetto</label><input id="mail-new-subject" required maxlength="200"><label for="mail-new-body">Messaggio</label><textarea id="mail-new-body" rows="6" required maxlength="20000"></textarea><p id="mail-compose-status" role="status"></p><div class="actions"><button type="submit">Controlla e invia</button><button id="mail-compose-close" type="button" class="secondary">Chiudi bozza</button></div></form></dialog><dialog id="mail-confirm" aria-labelledby="mail-confirm-title"><h2 id="mail-confirm-title">Conferma invio email</h2><p id="mail-confirm-copy"></p><div id="mail-confirm-body"></div><div class="actions"><button id="mail-send-cancel" type="button" class="secondary">Annulla</button><button id="mail-send-confirm" type="button">Invia email</button></div></dialog><script src="assets/journal-config.js?v=2"></script><script src="assets/admin-journal.js?v=1"></script><script src="assets/admin-hub.js?v=outlook-1"></script><script src="assets/admin-mail.js?v=compact-2"></script></body></html>
+
 
 
 
