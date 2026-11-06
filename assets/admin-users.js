@@ -14,7 +14,7 @@ function draw(){
  $('users-list').replaceChildren();
  for(const u of rows){
   const row=el('tr'),identity=el('td'),person=el('div',undefined,'users-person'),avatar=el('span',u.name.trim().split(/\s+/).slice(0,2).map(s=>s[0]||'').join('').toUpperCase()||'U','users-avatar');
-  avatar.setAttribute('aria-hidden','true');person.append(avatar,el('strong',u.name));identity.append(person);
+  if(demo&&(u.id==='demo-1'||u.id==='demo-2')){avatar.textContent='';avatar.className+=' users-avatar-photo '+(u.id==='demo-1'?'users-avatar-marco':'users-avatar-giulia');}avatar.setAttribute('aria-hidden','true');person.append(avatar,el('strong',u.name));identity.append(person);
   const email=el('td',u.email||'Email non disponibile'),status=el('td'),actions=el('td'),tools=el('div',undefined,'users-actions');status.append(el('span',labels[u.state]||labels.unknown,'users-state '+u.state));
   const write=button(demo?'Prova scrittura':'Scrivi',()=>{if(demo){$('users-status').textContent='Simulazione: messaggio per '+u.name+'. Nessuna email inviata.';return;}document.querySelector('.hub-nav [data-section="mail"]').click();document.dispatchEvent(new CustomEvent('di-admin-mail-compose',{detail:{to:u.email}}));});write.disabled=!u.email;
   tools.append(write,button(demo?'Modifica':'Dettagli',()=>edit(u)));actions.append(tools);row.append(identity,email,el('td',u.count+' messaggi'),status,actions);$('users-list').append(row);
