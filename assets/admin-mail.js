@@ -2,7 +2,10 @@
  const API='https://drone-italia-commenti.turni-vigilanza-pdura.workers.dev',ORIGIN=new URL(API).origin;
  const $=id=>document.getElementById(id),el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n};
  let key='',epoch=0,folder='inbox',nextCursor=null,rows=[],selected=null,pending=null,popup=null,draft=null,sending=false,loading=false,viewRun=0,listRun=0,composeTo='';
- const status=text=>$('mail-status').textContent=text;
+ const status=text=>{$('mail-status').textContent=text;if($('mail-compose-dialog').open)$('mail-compose-status').textContent=text;};
+ function syncModalScroll(){document.body.classList.toggle('di-mail-modal-open',$('mail-compose-dialog').open||$('mail-confirm').open);}
+ function openCompose(){if(!$('mail-compose-dialog').open)$('mail-compose-dialog').showModal();$('mail-compose-status').textContent='';syncModalScroll();$('mail-new-to').focus();}
+ function closeCompose(){$('mail-compose-dialog').close();syncModalScroll();}
  async function api(path,data){
   const auth=key;if(!auth)throw Error('Accedi al pannello.');
   const response=await fetch(API+'/admin/mail'+path,{method:data===undefined?'GET':'POST',headers:{Authorization:'Bearer '+auth,...(data===undefined?{}:{'Content-Type':'application/json'})},...(data===undefined?{}:{body:JSON.stringify(data)}),credentials:'omit',cache:'no-store',signal:AbortSignal.timeout(35000)});
@@ -52,7 +55,7 @@
    if(m.hasAttachments)container.append(el('p','Questo messaggio contiene allegati. In questa prima versione non vengono aperti nel pannello.','hint'));
    if(folder!=='sentitems'){
     const label=el('label','Risposta a: '+m.replyTo.map(person).join(', '));label.htmlFor='mail-reply-body';
-    const textarea=el('textarea');textarea.id='mail-reply-body';textarea.rows=7;textarea.maxLength=20000;textarea.placeholder='Scrivi la tua risposta…';
+    const textarea=el('textarea');textarea.id='mail-reply-body';textarea.rows=4;textarea.maxLength=20000;textarea.placeholder='Scrivi la tua risposta…';
     const button=el('button','Controlla e invia risposta');button.type='button';
     button.addEventListener('click',()=>prepare({type:'reply',id:m.id,recipients:m.replyTo.map(p=>p.address),subject:'Re: '+m.subject,body:textarea.value}));container.append(label,textarea,button);
    }
@@ -64,7 +67,7 @@
    const data=await api('/status');if(version!==epoch)return;
    $('mail-connect').hidden=data.connected;$('mail-disconnect').hidden=!data.connected;$('mail-tools').hidden=!data.connected;$('mail-columns').hidden=!data.connected;
    $('mail-connection').textContent=data.connected?'COLLEGATA · '+data.mailbox:'DA COLLEGARE · '+data.mailbox;
-   if(data.connected){if(composeTo){$('mail-compose').hidden=false;$('mail-new-to').value=composeTo;$('mail-new-subject').value='Drone in Quota — Il tuo messaggio';composeTo='';$('mail-new-subject').focus();}await list();}else status('Premi Collega Outlook e autorizza la casella droneinquota@outlook.com.');
+   if(data.connected){if(composeTo){openCompose();$('mail-new-to').value=composeTo;$('mail-new-subject').value='Drone in Quota — Il tuo messaggio';composeTo='';$('mail-new-subject').focus();}await list();}else status('Premi Collega Outlook e autorizza la casella droneinquota@outlook.com.');
   }catch(e){if(version===epoch){$('mail-connection').textContent='COLLEGAMENTO DA COMPLETARE';status(e.message);}}
  }
  $('mail-connect').addEventListener('click',async()=>{
@@ -91,10 +94,13 @@
   draft={...value,body,requestId:crypto.randomUUID()};
   $('mail-confirm-title').textContent='Conferma invio email';$('mail-confirm-copy').textContent='Da: droneinquota@outlook.com\nA: '+value.recipients.join(', ')+'\nOggetto: '+value.subject;
   $('mail-confirm-body').textContent=body;$('mail-send-confirm').textContent='Invia email';$('mail-send-confirm').disabled=false;
-  $('mail-confirm').showModal();$('mail-send-cancel').focus();
+  $('mail-confirm').showModal();syncModalScroll();$('mail-send-cancel').focus();
  }
- $('mail-compose-open').addEventListener('click',()=>{$('mail-compose').hidden=false;$('mail-new-to').focus();});
- $('mail-compose-close').addEventListener('click',()=>{$('mail-compose').hidden=true;});
+ $('mail-compose-open').addEventListener('click',openCompose);
+ $('mail-compose-close').addEventListener('click',closeCompose);
+ $('mail-compose-x').addEventListener('click',closeCompose);
+ $('mail-compose-dialog').addEventListener('close',syncModalScroll);
+ $('mail-confirm').addEventListener('close',syncModalScroll);
  $('mail-compose').addEventListener('submit',event=>{event.preventDefault();prepare({type:'new',recipients:[$('mail-new-to').value.trim()],subject:$('mail-new-subject').value.trim(),body:$('mail-new-body').value});});
  $('mail-send-cancel').addEventListener('click',()=>{if(sending)return;draft=null;$('mail-confirm').close();});
  $('mail-confirm').addEventListener('cancel',event=>{if(sending)event.preventDefault();else draft=null;});
@@ -108,20 +114,21 @@
     if(value.type==='reply')body.expectedRecipients=value.recipients;else{body.to=value.recipients[0];body.subject=value.subject;}
     await api(value.type==='reply'?'/messages/'+encodeURIComponent(value.id)+'/reply':'/send',body);
     if(version!==epoch)return;status('Microsoft ha accettato l’invio. Puoi controllarlo in Posta inviata.');
-    if(value.type==='new'){$('mail-compose').reset();$('mail-compose').hidden=true;}else if($('mail-reply-body'))$('mail-reply-body').value='';
+    if(value.type==='new'){$('mail-compose').reset();closeCompose();}else if($('mail-reply-body'))$('mail-reply-body').value='';
    }
    draft=null;$('mail-confirm').close();
   }catch(e){if(version===epoch){draft=null;$('mail-confirm').close();status(e.message);}}
   finally{sending=false;$('mail-send-confirm').disabled=false;$('mail-send-cancel').disabled=false;}
  });
  $('mail-disconnect').addEventListener('click',()=>{
-  draft={type:'disconnect'};$('mail-confirm-title').textContent='Scollegare Outlook?';$('mail-confirm-copy').textContent='Verranno rimossi dal backend i codici di accesso alla casella. Le email resteranno su Outlook.';$('mail-confirm-body').textContent='Potrai ricollegare la casella in seguito.';$('mail-send-confirm').textContent='Scollega Outlook';$('mail-confirm').showModal();$('mail-send-cancel').focus();
+  draft={type:'disconnect'};$('mail-confirm-title').textContent='Scollegare Outlook?';$('mail-confirm-copy').textContent='Verranno rimossi dal backend i codici di accesso alla casella. Le email resteranno su Outlook.';$('mail-confirm-body').textContent='Potrai ricollegare la casella in seguito.';$('mail-send-confirm').textContent='Scollega Outlook';$('mail-confirm').showModal();syncModalScroll();$('mail-send-cancel').focus();
  });
  $('mail-folder').addEventListener('change',()=>{folder=$('mail-folder').value;viewRun++;nextCursor=null;rows=[];clearReader();list();});
  $('mail-search').addEventListener('input',renderList);$('mail-refresh').addEventListener('click',()=>list());$('mail-more').addEventListener('click',()=>list(true));
  document.addEventListener('di-admin-mail-compose',event=>{if(key&&typeof event.detail?.to==='string')composeTo=event.detail.to;});
  document.addEventListener('di-admin-mail-open',()=>{if(key)refreshStatus();});
  document.addEventListener('di-admin-session',event=>{key=event.detail.key;epoch++;});
- document.addEventListener('di-admin-lock',()=>{key='';epoch++;viewRun++;listRun++;loading=false;rows=[];nextCursor=null;selected=null;pending=null;draft=null;composeTo='';if(popup&&!popup.closed)popup.close();$('mail-list').replaceChildren();clearReader();$('mail-compose').reset();$('mail-compose').hidden=true;if($('mail-confirm').open)$('mail-confirm').close();status('');});
+ document.addEventListener('di-admin-lock',()=>{key='';epoch++;viewRun++;listRun++;loading=false;rows=[];nextCursor=null;selected=null;pending=null;draft=null;composeTo='';if(popup&&!popup.closed)popup.close();$('mail-list').replaceChildren();clearReader();$('mail-compose').reset();closeCompose();if($('mail-confirm').open)$('mail-confirm').close();status('');});
  clearReader();
 })();
+
