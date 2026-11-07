@@ -1,0 +1,116 @@
+/* Drone in Quota — linguaggio visivo condiviso con il registro utenti. */
+@font-face{font-family:'DI Rajdhani';src:url('fonts/Rajdhani-SemiBold.ttf') format('truetype');font-weight:600;font-style:normal;font-display:swap}
+body.di-unified-ui{--di-ui-bg:#031321;--di-ui-panel:#061c29f5;--di-ui-line:#39869d;--di-ui-text:#dcecf4;--di-ui-muted:#a7c5d3;--di-ui-cyan:#42d5e8;--di-ui-button:#086080;color-scheme:dark;color:var(--di-ui-text);font:14px/1.6 system-ui,-apple-system,'Segoe UI',sans-serif;background-color:var(--di-ui-bg);background-image:linear-gradient(115deg,rgba(0,15,29,.82),rgba(0,22,38,.58)),url('sfondo-italia-corretta-v3.webp');background-position:center top;background-size:cover;background-attachment:fixed}
+body.di-unified-ui :is(h1,h2,h3){font-family:'DI Rajdhani','Arial Narrow',system-ui,sans-serif;font-weight:600;color:#e2f2f9;line-height:1.2;letter-spacing:1px}
+body.di-unified-ui h1{font-size:clamp(28px,3vw,40px);text-transform:uppercase}
+body.di-unified-ui h2{font-size:22px;text-transform:uppercase}
+body.di-unified-ui h3{font-size:18px}
+body.di-unified-ui :is(p,li,label){line-height:1.6}
+body.di-unified-ui :is(.hint,.media-note,.reg-hint,.aside-note,.list-note,.meta,.admin-meta){font-size:12px;color:var(--di-ui-muted);line-height:1.65}
+body.di-unified-ui :is(.eyebrow,.hub-eyebrow,.di-explore-eyebrow){font:600 11px/1.5 'DI Rajdhani',sans-serif;letter-spacing:2.4px;color:#7dd7eb;text-transform:uppercase}
+body.di-unified-ui :is(button,.primary,.hub-visit,nav a,.di-explore-back){font-family:'DI Rajdhani','Arial Narrow',system-ui,sans-serif;font-weight:600;letter-spacing:.7px;text-transform:uppercase}
+body.di-unified-ui button:not(.reg-person):not(.flight-row):not(.di-explore-card):not(.di-release-notes-trigger):not(#photo-open):not(.photo-arrow):not([data-section]){min-height:36px;font-size:14px;line-height:1.3;padding:8px 13px;border:1px solid #408da7;border-radius:2px;background:linear-gradient(120deg,#0b6687,#073a55);color:#e1f2fa;box-shadow:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px)}
+body.di-unified-ui :is(nav a,.primary,.hub-visit,.di-explore-back){min-height:38px;padding:8px 14px;border:1px solid #408da7;border-radius:2px;background:linear-gradient(120deg,#0a5775,#062b44);color:#e1f2fa;font-size:14px;line-height:1.35;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+body.di-unified-ui :is(button.secondary,.hub-visit,nav a){background:linear-gradient(125deg,#0b2f45,#061d30)}
+body.di-unified-ui :is(button.danger,#hub-exit){background:linear-gradient(120deg,#703443,#452331)!important;border-color:#ab596d!important;color:#ffc4c9!important}
+body.di-unified-ui :is(button[aria-pressed=true],button[aria-selected=true],nav a[aria-current]):not(.reg-person):not(.flight-row):not(.hub-nav button){background:linear-gradient(110deg,#28c9db,#58d9eb);border-color:#76e4ef;color:#032032;box-shadow:none}
+body.di-unified-ui :is(button,a):focus-visible{outline:2px solid #b1f3ff;outline-offset:3px}
+body.di-unified-ui button:disabled{opacity:.45;filter:none}
+body.di-unified-ui button:not(:disabled):hover,body.di-unified-ui nav a:hover{filter:brightness(1.12)}
+body.di-unified-ui :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]),select,textarea){box-sizing:border-box;min-height:38px;padding:9px 11px;border:1px solid #3b7a91;border-radius:2px;background:#041b2b;color:#dcecf4;font:14px/1.5 system-ui,sans-serif;box-shadow:none}
+body.di-unified-ui select{padding:0 30px 0 11px;line-height:normal}
+body.di-unified-ui textarea{line-height:1.65;resize:vertical}
+body.di-unified-ui :is(input,select,textarea):focus-visible{outline:2px solid #75dbe9;outline-offset:2px}
+body.di-unified-ui input::placeholder,body.di-unified-ui textarea::placeholder{color:#88a6b7;opacity:1}
+body.di-unified-ui input:is([type=checkbox],[type=radio]){accent-color:#49d0e3}
+body.di-unified-ui :is(.panel,.item,.reg-panel,.mail-reader,.mail-list-panel,.comments-page,.cm-reply-item,.community-pilots-panel,.di-explore-card,.di-support-panel){background:linear-gradient(135deg,#061f30f5,#031522f5);border:1px solid #39869d;border-radius:4px;box-shadow:inset 0 1px #a0eaff12}
+body.di-unified-ui :is(.panel,.item){padding:20px}
+body.di-unified-ui :is(dialog,.di-modal-panel){border:1px solid #4babc0;border-radius:4px;background:linear-gradient(135deg,#082a3c,#031523);color:#dcecf4;box-shadow:0 20px 70px #0009}
+body.di-unified-ui dialog::backdrop{background:#00101dcc;backdrop-filter:blur(5px)}
+body.di-unified-ui :is(.dialog-top,.di-modal-head){border-bottom:1px solid #2a5a70;padding-bottom:12px;margin-bottom:16px}
+body.di-unified-ui :is(.dialog-top,.di-modal-head) h2{font-size:23px;margin:0}
+body.di-unified-ui :is(.hub-header,.top,.di-support-header){border-bottom-color:#326a82;background-color:#021625df}
+body.di-unified-ui :is(.site-footer,footer,.footer){border-top-color:#2c6076;color:#aacad8;font-size:11px}
+body.di-unified-ui .di-ui-icon{display:inline-block;width:17px;height:17px;flex:0 0 17px;vertical-align:middle;color:currentColor;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+body.di-unified-ui :is(.hub-icon,.di-explore-card svg){stroke-width:1.7}
+/* Home, navigazione ed Esplora. Mantiene le immagini e i collegamenti esistenti. */
+html body.di-unified-ui main.wrap{padding-top:30px!important;padding-bottom:24px!important}
+html body.di-unified-ui #menu.menu{gap:9px!important;margin-top:24px!important;margin-bottom:24px!important;padding:6px 2px!important}
+html body.di-unified-ui #menu.menu :is(button[data-id],#di-journal-link,#di-download-link,#di-support-link,.di-explore-back){display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;min-height:38px!important;padding:8px 14px!important;border:1px solid #408da7!important;border-radius:2px!important;background:linear-gradient(125deg,#0b2f45,#061d30)!important;color:#dcecf4!important;font:600 15px/1.35 'DI Rajdhani',sans-serif!important;text-transform:uppercase!important;letter-spacing:.7px!important;text-decoration:none!important;box-shadow:none!important;clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)!important}
+html body.di-unified-ui #menu.menu :is(button[aria-pressed=true],button.active){background:linear-gradient(110deg,#28c9db,#58d9eb)!important;color:#032032!important}
+html body.di-unified-ui .section .copy #heading{font:600 clamp(28px,3vw,40px)/1.2 'DI Rajdhani',sans-serif!important;letter-spacing:1.2px!important}
+html body.di-unified-ui .section .copy p#description{font:400 15px/1.7 system-ui,sans-serif!important;letter-spacing:0!important;color:#cadfea!important}
+html body.di-unified-ui .section .copy #note{font:400 12px/1.6 system-ui,sans-serif!important;color:#a7c5d3!important}
+html body.di-unified-ui #di-explore-page{background:linear-gradient(135deg,#061f30f5,#031522f5);border-color:#39869d;border-radius:4px;padding:24px}
+body.di-unified-ui .di-explore-card{gap:8px;padding:18px;min-height:0}
+body.di-unified-ui .di-explore-card svg{width:28px;height:28px}
+body.di-unified-ui .di-explore-name{font-size:18px}
+body.di-unified-ui .di-explore-description{font-size:13px;line-height:1.6}
+/* Commenti e accesso. */
+html body.di-unified-ui #comments-page{border-radius:4px!important;background:linear-gradient(135deg,#061f30f5,#031522f5)!important;border-color:#39869d!important;padding:22px!important}
+html body.di-unified-ui #comments-page :is(h2,h3){font-family:'DI Rajdhani',sans-serif!important;letter-spacing:.8px!important}
+html body.di-unified-ui :is(#comments-form,.cm-reply-form) :is(input:not([type=checkbox]),textarea){background:#041b2b!important;color:#dcecf4!important;border:1px solid #3b7a91!important;border-radius:2px!important;padding:10px 12px!important;font:14px/1.6 system-ui,sans-serif!important}
+html body.di-unified-ui :is(#comments-form,.cm-reply-form) :is(label,.di-consent-label){font:400 13px/1.6 system-ui,sans-serif!important}
+html body.di-unified-ui :is(#comments-form button,#cm-auth button,#cm-more,.cm-reply-toggle,.cm-reply-form button,#di-compose-toggle){border:1px solid #408da7!important;border-radius:2px!important;background:linear-gradient(120deg,#0b6687,#073a55)!important;color:#e1f2fa!important;font:600 14px/1.35 'DI Rajdhani',sans-serif!important;min-height:36px!important;padding:8px 13px!important}
+body.di-unified-ui .cm-reply-item{padding:12px 14px}
+body.di-unified-ui :is(.cm-item,.cm-reply-item) p{font:14px/1.65 system-ui,sans-serif}
+/* Diario: stessa impaginazione e pannelli con scorrimento già presenti. */
+body.di-unified-ui.journal-page h1{font-size:clamp(28px,3vw,40px)}
+body.di-unified-ui.journal-page :is(.story h2,aside h2,.community-pilots-panel h2){font-size:22px;letter-spacing:.8px}
+body.di-unified-ui.journal-page :is(.intro>div>p:last-child,#story){font-size:14px;line-height:1.7}
+body.di-unified-ui.journal-page :is(article,aside){background:linear-gradient(135deg,#061f30f5,#031522f5);border-color:#39869d;border-radius:4px}
+body.di-unified-ui.journal-page .flight-row strong{font-size:18px}
+body.di-unified-ui.journal-page .flight-row .row-copy>span{font-size:11px}
+body.di-unified-ui.journal-page #stats{gap:10px}
+body.di-unified-ui.journal-page dt{font-size:11px}
+body.di-unified-ui.journal-page dd{font-size:14px}
+body.di-unified-ui.journal-page .primary{min-height:38px;font-size:14px;padding:8px 14px}
+body.di-unified-ui.journal-page :is(#journal-form label,#journal-auth label){font-size:13px}
+/* Download e sostegno: si mantengono i controlli e i pulsanti del provider. */
+html body.di-unified-ui :is(#download-page,.download-page) :is(h1,#latest-title){font-family:'DI Rajdhani',sans-serif!important;letter-spacing:1px!important}
+html body.di-unified-ui :is(#download-page,.download-page) h1{font-size:clamp(28px,3vw,40px)!important}
+html body.di-unified-ui #latest.di-latest-compact{background:linear-gradient(135deg,#061f30f5,#031522f5)!important;border:1px solid #39869d!important;border-radius:4px!important}
+html body.di-unified-ui :is(#download-page,.download-page) :is(.intro,.di-release-meta,.di-release-date,.status){font:400 14px/1.6 system-ui,sans-serif!important;color:#b6d1df!important}
+html body.di-unified-ui .di-release-dialog-head h2{font:600 23px/1.3 'DI Rajdhani',sans-serif!important;text-transform:uppercase;letter-spacing:.8px}
+html body.di-unified-ui .di-release-dialog-body :is(p,li){font:400 14px/1.7 system-ui,sans-serif!important}
+html body.di-unified-ui .di-release-dialog-body h3{font:600 18px/1.3 'DI Rajdhani',sans-serif!important}
+html body.di-unified-ui #latest.di-latest-compact .di-release-notes-trigger{font:600 15px/1.5 'DI Rajdhani',sans-serif!important}
+html body.di-unified-ui.di-support-aero #support-page-title{font:600 clamp(28px,3vw,40px)/1.2 'DI Rajdhani',sans-serif!important}
+html body.di-unified-ui.di-support-aero #di-donate-modal .di-donate-card{background:linear-gradient(135deg,#061f30f5,#031522f5)!important;border-color:#39869d!important;border-radius:4px!important;padding:24px!important}
+html body.di-unified-ui.di-support-aero .di-support-panel{background:#041b2be6!important;border-color:#326d83!important;border-radius:3px!important}
+html body.di-unified-ui.di-support-aero .di-support-panel :is(p,li){font-size:14px;line-height:1.65}
+html body.di-unified-ui.di-support-aero .di-support-tabs button{font:600 14px/1.35 'DI Rajdhani',sans-serif!important;padding:10px!important}
+/* Centro di controllo, coerente con il registro già approvato. */
+body.di-unified-ui .hub-main :is(h1,#workspace-title){font-size:clamp(28px,3vw,40px)}
+body.di-unified-ui .hub-main h2{font-size:22px}
+body.di-unified-ui #hub-overview>p:not(.hub-eyebrow){font-size:14px;line-height:1.6;margin-bottom:18px}
+body.di-unified-ui .hub-counts>div{min-height:92px;padding:16px 20px;grid-template-rows:34px auto;column-gap:14px}
+body.di-unified-ui .hub-counts strong{font-size:36px}
+body.di-unified-ui .hub-counts span{font-size:12px;letter-spacing:1px}
+body.di-unified-ui .hub-counts .hub-icon{width:30px;height:30px}
+body.di-unified-ui .hub-cards .panel{min-height:145px;padding:18px}
+body.di-unified-ui .hub-card-copy h2{font-size:19px}
+body.di-unified-ui .hub-card-copy p{font-size:13px;line-height:1.6}
+body.di-unified-ui .hub-queue-row{padding:14px 0;gap:14px}
+body.di-unified-ui .hub-queue-row strong{font-size:14px}
+body.di-unified-ui .hub-queue-row small{font-size:12px}
+body.di-unified-ui .hub-site-description{font-size:15px;line-height:1.7}
+body.di-unified-ui #hub-site label{font-size:16px}
+body.di-unified-ui #site-message{font-size:14px;min-height:105px}
+body.di-unified-ui #site-enable{font-size:15px;min-height:40px;padding:9px 15px}
+body.di-unified-ui #site-disable{font-size:15px;min-height:40px}
+body.di-unified-ui #hub-site .hub-state{font-size:18px}
+body.di-unified-ui :is(.mail-toolbar,.filters,.toolbar){gap:10px}
+body.di-unified-ui .mail-compose :is(input,textarea){font-size:14px}
+body.di-unified-ui :is(.mail-reader,.mail-list-panel) h2{font-size:20px}
+body.di-unified-ui .hub-nav button{font-size:16px;line-height:1.45}
+body.di-unified-ui .hub-nav .hub-icon{width:25px;height:25px}
+@media(max-width:850px){body.di-unified-ui :is(h1,.hub-main h1){font-size:30px}body.di-unified-ui .hub-nav button{font-size:14px;min-height:42px}body.di-unified-ui .hub-counts>div{min-height:86px;padding:12px}body.di-unified-ui .hub-cards .panel{min-height:0}body.di-unified-ui .hub-cards [data-card=site]{min-height:0}}
+@media(max-width:600px){body.di-unified-ui{font-size:14px;background-attachment:scroll}html body.di-unified-ui main.wrap{padding-top:18px!important}html body.di-unified-ui #menu.menu{margin-top:18px!important;margin-bottom:18px!important;gap:7px!important}html body.di-unified-ui #menu.menu :is(button[data-id],#di-journal-link,#di-download-link,#di-support-link){min-height:40px!important;font-size:14px!important;padding:8px 11px!important}body.di-unified-ui .di-ui-icon{width:16px;height:16px;flex-basis:16px}body.di-unified-ui :is(.panel,.item){padding:16px}body.di-unified-ui .di-explore-card{padding:16px}html body.di-unified-ui .section .copy p#description{font-size:14px!important}html body.di-unified-ui #comments-page{padding:16px!important}body.di-unified-ui :is(button,.primary,nav a){min-height:40px}body.di-unified-ui .hub-counts strong{font-size:30px}}
+@media(prefers-reduced-motion:reduce){body.di-unified-ui :is(button,a){transition:none!important}}
+/* Su telefono i campi restano leggibili senza ingrandimento automatico del browser. */
+@media(max-width:600px){body.di-unified-ui :is(input:not([type=checkbox]):not([type=radio]),select,textarea){font-size:16px!important}body.di-unified-ui :is(button,.primary,nav a){min-height:42px!important}}
+body.di-unified-ui [hidden]{display:none!important}
+/* Sostituisce i cuori emoji decorativi con l'icona lineare condivisa. */
+body.di-unified-ui .di-support-tabs>button>span[aria-hidden=true]{display:none!important}
+body.di-unified-ui .di-support-tabs>button{flex-direction:row!important;gap:8px!important}
