@@ -1,0 +1,88 @@
+/* Registro: misure ricavate dal riferimento 1672×941, senza cambiare i dati. */
+body.di-unified-ui .hub-header{min-height:70px;padding:10px 36px;gap:24px}
+body.di-unified-ui .hub-header .hub-brand{min-width:310px}
+body.di-unified-ui .hub-header .hub-wordmark{font-size:36px!important;line-height:1.05!important}
+body.di-unified-ui .hub-header .hub-wordmark i{height:6px;width:100%;margin-top:5px!important}
+body.di-unified-ui .hub-header strong{font:600 24px/1.2 'DI Rajdhani',sans-serif;letter-spacing:1.2px;text-transform:uppercase}
+body.di-unified-ui .hub-header :is(button,.hub-visit){font-size:19px;min-height:44px;padding:8px 18px}
+body.di-unified-ui>main:has(#hub-shell){max-width:1672px;width:100%;margin:0 auto;padding:40px 10px 28px}
+body.di-unified-ui #hub-shell{grid-template-columns:224px minmax(0,1fr);gap:20px}
+body.di-unified-ui .hub-nav{height:auto;min-height:0;align-self:start;padding:10px}
+body.di-unified-ui .hub-nav button{font:700 22px/1.25 'DI Rajdhani',sans-serif;text-transform:uppercase;min-height:60px;padding:12px 8px;gap:14px;letter-spacing:0;margin:4px 0}
+body.di-unified-ui .hub-nav button:not(:last-child):not([aria-current]){border-bottom:1px solid #2d4e5e}
+body.di-unified-ui .hub-nav .hub-icon{width:29px;height:29px;flex-basis:29px}
+#hub-shell #hub-users .reg-heading{gap:22px}
+#hub-shell #hub-users .reg-heading h1{font:700 52px/1.1 'DI Rajdhani',sans-serif!important;letter-spacing:.5px!important;margin:0!important;text-transform:uppercase}
+#hub-shell #hub-users .reg-badge{font:600 17px/1.2 'DI Rajdhani',sans-serif;padding:6px 14px;border-radius:12px;letter-spacing:.5px;text-transform:uppercase}
+#hub-shell #hub-users .reg-tabs{gap:10px;margin:22px 0 22px;padding-bottom:17px;border-color:#3fbdcf}
+#hub-shell #hub-users .reg-tabs button{font:700 21px/1.2 'DI Rajdhani',sans-serif!important;text-transform:uppercase!important;min-height:46px!important;padding:10px 22px!important;border:1px solid #48b9cb!important;border-radius:2px!important;background:linear-gradient(120deg,#072b3c,#031522)!important;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%)!important}
+#hub-shell #hub-users .reg-tabs button[aria-pressed=true]{background:linear-gradient(110deg,#10d1e1,#4be0ee)!important;color:#021c26!important}
+#hub-shell #hub-users .reg-grid{grid-template-columns:minmax(0,1.9fr) minmax(340px,1fr);gap:16px;align-items:stretch}
+#hub-shell #hub-users .reg-panel{height:635px;max-height:calc(100dvh - 290px);min-height:480px;padding:18px;border:1px solid #43bfce;border-radius:6px;background:linear-gradient(140deg,#071f2cf2,#02121cf7);overflow:auto;scrollbar-width:thin;scrollbar-color:#43899a #031522}
+#hub-shell #hub-users .reg-list-panel{display:flex;flex-direction:column;overflow:hidden}
+#hub-shell #hub-users .reg-toolbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,.65fr) auto;gap:20px;align-items:center}
+#hub-shell #hub-users .reg-search-control{position:relative;min-width:0}
+#hub-shell #hub-users .reg-search-control>svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);width:23px;height:23px;color:#cce3ee;pointer-events:none}
+#hub-shell #hub-users .reg-toolbar input{box-sizing:border-box;width:100%!important;min-width:0!important;min-height:44px!important;height:44px!important;padding:8px 12px 8px 44px!important;font:400 18px/1.3 system-ui,sans-serif!important;border:1px solid #70a8ba;border-radius:6px}
+#hub-shell #hub-users .reg-toolbar select{min-width:0;min-height:44px!important;height:44px!important;padding:0 32px 0 16px!important;font:400 17px/1.3 system-ui,sans-serif!important;border-color:#70a8ba;border-radius:6px}
+#hub-shell #hub-users .reg-toolbar button,#hub-shell #hub-users .reg-pagination button{font:700 19px/1.2 'DI Rajdhani',sans-serif!important;min-height:44px!important;padding:8px 16px!important;text-transform:uppercase!important;border:1px solid #41cce0!important;border-radius:5px!important;clip-path:none!important}
+#hub-shell #hub-users .reg-summary{font:400 18px/1.5 system-ui,sans-serif;margin:18px 0 22px}
+#hub-shell #hub-users .reg-summary:before{content:'';display:inline-block;vertical-align:middle;width:23px;height:23px;margin-right:12px;background:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23c5e1ee" stroke-width="1.8"%3E%3Ccircle cx="12" cy="7" r="3"/%3E%3Cpath d="M6 21v-3a6 6 0 0 1 12 0v3M5 5a3 3 0 0 0 0 6M3 14a5 5 0 0 0-2 4v3M19 5a3 3 0 0 1 0 6M21 14a5 5 0 0 1 2 4v3"/%3E%3C/svg%3E') center/contain no-repeat}
+#hub-shell #hub-users .reg-table-wrap{flex:1;min-height:0;overflow:auto}
+#hub-shell #hub-users .reg-table{font:400 18px/1.4 system-ui,sans-serif;width:100%}
+#hub-shell #hub-users .reg-table th{position:sticky;top:0;z-index:1;background:linear-gradient(#1a394a,#102734);font:700 21px/1.2 'DI Rajdhani',sans-serif!important;text-transform:uppercase!important;letter-spacing:.3px;padding:15px 12px;border-top:1px solid #55798a;border-bottom:1px solid #55798a;white-space:nowrap}
+#hub-shell #hub-users .reg-table th:first-child{border-radius:5px 0 0 0}
+#hub-shell #hub-users .reg-table th:last-child{border-radius:0 5px 0 0}
+#hub-shell #hub-users .reg-table td{font:400 18px/1.4 system-ui,sans-serif;padding:14px 12px;border-bottom:1px solid #456474;vertical-align:middle}
+#hub-shell #hub-users .reg-table tr.selected{background:#073846;box-shadow:inset 3px 0 #54e7ee,inset 0 2px #54e7ee,inset 0 -2px #54e7ee}
+#hub-shell #hub-users .reg-person{gap:14px}
+#hub-shell #hub-users .reg-person strong{font:700 24px/1.2 'DI Rajdhani',sans-serif;text-transform:none!important}
+#hub-shell #hub-users .reg-person small{font-size:11px;line-height:1.3}
+#hub-shell #hub-users .reg-avatar{width:60px;height:60px;font:600 31px/1 system-ui,sans-serif;border:1px solid #79a6bc;background:linear-gradient(130deg,#406278,#274458)}
+#hub-shell #hub-users .reg-avatar.large{width:82px;height:82px;font-size:38px}
+#hub-shell #hub-users .reg-verified{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;margin-right:8px;border-radius:50%;background:#39dc5a;color:#05231c;font:700 13px/1 system-ui,sans-serif;vertical-align:middle}
+#hub-shell #hub-users .reg-state{font:700 18px/1.2 'DI Rajdhani',sans-serif;text-transform:uppercase!important;padding:5px 13px}
+#hub-shell #hub-users .reg-pagination{margin-top:22px;padding-top:10px;gap:18px;border-top:1px solid #385c6d;flex:none}
+#hub-shell #hub-users .reg-pagination span{font:400 17px/1.4 system-ui,sans-serif}
+#hub-shell #registry-detail>h2{font:700 28px/1.15 'DI Rajdhani',sans-serif!important;text-transform:uppercase!important;margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid #3b6679}
+#hub-shell #registry-detail .reg-detail-head{gap:20px;margin-bottom:18px}
+#hub-shell #registry-detail .reg-detail-head h3{font:700 31px/1.2 'DI Rajdhani',sans-serif!important;text-transform:none!important;margin:0}
+#hub-shell #registry-detail .reg-detail-head p{font:400 18px/1.4 system-ui,sans-serif;word-break:break-word}
+#hub-shell #registry-detail .reg-info-row{font:400 15px/1.4 system-ui,sans-serif;margin:9px 0}
+#hub-shell #registry-detail .reg-info-row strong{font:600 15px/1.4 'DI Rajdhani',sans-serif;text-transform:none}
+#hub-shell #registry-detail .reg-ban{padding:12px 14px;margin:18px 0 10px;border-radius:5px}
+#hub-shell #registry-detail .reg-ban strong{font:700 21px/1.25 'DI Rajdhani',sans-serif!important;text-transform:uppercase!important}
+#hub-shell #registry-detail>.reg-hint:not(p){display:inline-block;background:#254352;border:1px solid #668b9d;border-radius:5px;padding:2px 8px;margin-top:0;font:600 16px/1.2 'DI Rajdhani',sans-serif;text-transform:uppercase}
+#hub-shell #registry-detail>p:not(.reg-hint){font-size:16px;line-height:1.5;margin:4px 0 14px}
+#hub-shell #registry-detail .reg-detail-actions{gap:12px;margin-top:16px}
+#hub-shell #registry-detail .reg-detail-actions button{font:700 20px/1.2 'DI Rajdhani',sans-serif!important;text-transform:uppercase!important;min-height:44px!important;padding:8px 20px!important;border:1px solid #48d5e4!important;border-radius:5px!important;background:linear-gradient(120deg,#072a3a,#02141f)!important;clip-path:none!important;justify-content:flex-start!important}
+#hub-shell #registry-detail .reg-detail-actions .di-ui-icon{width:23px;height:23px;flex-basis:23px}
+#hub-shell #registry-detail>p.reg-hint{font:italic 14px/1.5 system-ui,sans-serif;margin-top:18px}
+#hub-shell #hub-users .reg-extra-tools{margin:10px 0 0;color:#a7c5d3;font-size:12px}
+#hub-shell #hub-users #registry-status{font-size:12px;line-height:1.4;margin:6px 0}
+#hub-shell #hub-users .reg-extra-tools summary{font:600 13px/1.4 'DI Rajdhani',sans-serif;text-transform:uppercase;padding:6px 0}
+#hub-shell #hub-users #registry-demo-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}
+@media(max-width:1200px){body.di-unified-ui .hub-header strong{font-size:18px}body.di-unified-ui .hub-header .hub-brand{min-width:230px}body.di-unified-ui .hub-header .hub-wordmark{font-size:29px!important}#hub-shell #hub-users .reg-grid{grid-template-columns:minmax(0,1fr)}#hub-shell #hub-users .reg-panel{height:auto;max-height:none;min-height:0}#hub-shell #hub-users .reg-table-wrap{max-height:520px}#hub-shell #registry-detail .reg-info-row{font-size:16px}}
+@media(max-width:850px){body.di-unified-ui>main:has(#hub-shell){padding:20px 14px}body.di-unified-ui #hub-shell{grid-template-columns:1fr;gap:20px}body.di-unified-ui .hub-header{padding:12px 16px}body.di-unified-ui .hub-header .hub-brand{min-width:0}body.di-unified-ui .hub-header .hub-wordmark{font-size:25px!important}body.di-unified-ui .hub-nav{padding:8px}body.di-unified-ui .hub-nav button{font-size:16px;min-height:42px;padding:8px;margin:0;gap:8px}body.di-unified-ui .hub-nav .hub-icon{width:22px;height:22px;flex-basis:22px}#hub-shell #hub-users .reg-heading h1{font-size:36px!important}#hub-shell #hub-users .reg-badge{font-size:13px}#hub-shell #hub-users .reg-tabs{margin:16px 0}#hub-shell #hub-users .reg-tabs button{font-size:16px!important;min-height:42px!important;padding:8px 14px!important}#hub-shell #hub-users .reg-toolbar{grid-template-columns:minmax(0,1fr) 170px;gap:10px}#hub-shell #hub-users .reg-toolbar #registry-refresh{grid-column:1/-1}}
+@media(max-width:600px){body.di-unified-ui .hub-header .hub-wordmark{font-size:22px!important}#hub-shell #hub-users .reg-heading h1{font-size:32px!important}#hub-shell #hub-users .reg-panel{padding:14px}#hub-shell #hub-users .reg-toolbar{grid-template-columns:minmax(0,1fr)}#hub-shell #hub-users .reg-table th{font-size:17px}#hub-shell #hub-users .reg-table td{font-size:15px;padding:10px 8px}#hub-shell #hub-users .reg-person strong{font-size:20px}#hub-shell #hub-users .reg-avatar{width:45px;height:45px;font-size:24px}#hub-shell #hub-users .reg-summary{font-size:14px}#hub-shell #hub-users .reg-pagination{gap:8px;flex-wrap:wrap}#hub-shell #registry-detail .reg-detail-actions button{font-size:18px!important}#hub-shell #registry-detail .reg-detail-head h3{font-size:27px!important}#hub-shell #hub-users .reg-state{font-size:15px}#hub-shell #registry-detail .reg-info-row{font-size:14px}#hub-shell #hub-users .reg-toolbar input{font-size:16px!important}}
+#hub-shell #registry-detail .reg-info-row>span{display:inline-flex;align-items:center;gap:9px}
+#hub-shell #registry-detail .reg-info-row>span:before{content:'';display:inline-block;width:19px;height:19px;flex:none;background-color:#d1e4ed;mask:var(--reg-field-icon) center/contain no-repeat;-webkit-mask:var(--reg-field-icon) center/contain no-repeat}
+#hub-shell #registry-detail .reg-info-row[data-field=calendar]{--reg-field-icon:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.8"%3E%3Crect x="4" y="5" width="16" height="16" rx="2"/%3E%3Cpath d="M8 2v6M16 2v6M4 11h16M8 15h3M8 18h3M14 15h3"/%3E%3C/svg%3E')}
+#hub-shell #registry-detail .reg-info-row[data-field=clock]{--reg-field-icon:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.8"%3E%3Ccircle cx="12" cy="12" r="9"/%3E%3Cpath d="M12 6v6l4 2"/%3E%3C/svg%3E')}
+#hub-shell #registry-detail .reg-info-row[data-field=activity]{--reg-field-icon:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.8"%3E%3Cpath d="M4 4h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H8l-5 3V6a2 2 0 0 1 1-2Z"/%3E%3C/svg%3E')}
+#hub-shell #registry-detail .reg-info-row[data-field=grade]{--reg-field-icon:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.8"%3E%3Cpath d="m12 2 3 6 7 1-5 5 1 8-6-4-6 4 1-8-5-5 7-1 3-6Z"/%3E%3C/svg%3E')}
+#hub-shell #registry-detail .reg-ban.temporary{display:flex;align-items:center;gap:14px}
+#hub-shell #registry-detail .reg-ban.temporary:before{content:'';display:block;width:27px;height:27px;flex:none;background:#ffd84f;mask:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.8"%3E%3Cpath d="m12 3 10 18H2L12 3ZM12 9v5M12 17v1"/%3E%3C/svg%3E') center/contain no-repeat;-webkit-mask:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.8"%3E%3Cpath d="m12 3 10 18H2L12 3ZM12 9v5M12 17v1"/%3E%3C/svg%3E') center/contain no-repeat}
+#hub-shell #registry-detail>h2{padding-bottom:8px;margin-bottom:10px}
+#hub-shell #registry-detail .reg-detail-head{margin-bottom:12px}
+#hub-shell #registry-detail .reg-profile-grade{display:block;font:400 11px/1.3 system-ui,sans-serif;color:#a7c5d3;margin-top:3px}
+#hub-shell #registry-detail .reg-info-row[data-field=activity]{justify-content:flex-start;gap:2px}
+#hub-shell #registry-detail .reg-info-row[data-field=activity] strong{font:400 16px/1.4 system-ui,sans-serif;text-align:left}
+#hub-shell #registry-detail .reg-ban{margin:14px 0 8px}
+#hub-shell #registry-detail>p:not(.reg-hint){margin-bottom:10px}
+#hub-shell #registry-detail .reg-detail-actions{gap:10px;margin-top:12px}
+#hub-shell #registry-detail>p.reg-hint{margin:10px 0 0}
+
+body.di-unified-ui .hub-nav:before,body.di-unified-ui .hub-nav:after{display:none}#hub-shell #registry-detail .reg-detail-head .reg-verified{margin:0 0 0 10px;flex:none}#hub-shell #registry-detail .reg-detail-head p{display:flex;align-items:center;flex-wrap:wrap}
+
+body.di-unified-ui .reg-reference-icon{width:23px;height:23px;flex:0 0 23px;pointer-events:none}body.di-unified-ui .hub-header :is(.hub-visit,#hub-exit){clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);border-radius:2px}#hub-shell #hub-users .reg-pagination .reg-reference-icon{width:18px;height:18px;flex-basis:18px}
