@@ -199,3 +199,15 @@ html body.di-public-ui .pilots-pagination{display:flex;align-items:center;justif
 html body.di-public-ui #pilots-page{font:400 14px/1.5 system-ui,sans-serif;text-align:center}
 html body.di-public-ui #pilots-dialog button:disabled{opacity:.45}
 @media(max-width:640px){html body.di-public-ui #pilots-dialog{padding:16px;max-height:90dvh;width:calc(100% - 20px)}html body.di-public-ui #pilots-dialog-list{grid-template-columns:minmax(0,1fr)}html body.di-public-ui .pilots-dialog-head{align-items:flex-start}html body.di-public-ui .pilots-dialog-head h2{font-size:24px!important}html body.di-public-ui .pilots-pagination{gap:8px;flex-wrap:wrap}html body.di-public-ui #pilots-dialog-list li{padding:12px}}
+
+/* Rubrica espandibile nella pagina: nessuna sovraimpressione. */
+html body.di-public-ui.journal-page #pilots-dialog{position:static!important;inset:auto!important;box-sizing:border-box;width:100%!important;max-width:none!important;max-height:none!important;margin:18px 0 0!important;padding:18px 0 0!important;border:0!important;border-top:1px solid #295d73!important;border-radius:0!important;background:none!important;box-shadow:none!important;overflow:visible!important}
+html body.di-public-ui.journal-page #pilots-dialog:not([hidden]){display:flex;flex-direction:column;gap:12px}
+html body.di-public-ui.journal-page #pilots-dialog[hidden]{display:none!important}
+html body.di-public-ui.journal-page #pilots-dialog .pilots-dialog-head{align-items:flex-start;flex-wrap:wrap;gap:12px}
+html body.di-public-ui.journal-page #pilots-dialog .pilots-dialog-head h2{font-size:23px!important}
+html body.di-public-ui.journal-page #pilots-dialog-list{grid-template-columns:minmax(0,1fr)!important;max-height:none;overflow:visible;gap:10px}
+html body.di-public-ui.journal-page #pilots-dialog-list li{padding:12px;gap:12px}
+html body.di-public-ui.journal-page #pilots-dialog .pilots-pagination{flex-wrap:wrap;gap:10px}
+html body.di-public-ui.journal-page #pilots-dialog #pilots-page{order:-1;width:100%}
+html body.di-public-ui.journal-page #pilots-dialog #pilots-load{width:100%;white-space:normal}
