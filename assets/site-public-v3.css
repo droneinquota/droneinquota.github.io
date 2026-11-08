@@ -174,3 +174,28 @@ html body.di-public-ui.journal-page .journal-community-panel #detail{height:auto
 html body.di-public-ui.journal-page .journal-community-panel #detail .story{background:none!important;border:0!important}
 html body.di-public-ui.journal-page .journal-right-column>.community-pilots-panel{margin-top:0!important}
 @media(max-width:720px){html body.di-public-ui.journal-page .journal-community-panel{max-height:none;overflow:visible;padding:18px}html body.di-public-ui.journal-page .journal-all-stories #list{max-height:none;overflow:visible}}
+
+/* Piloti: anteprima breve e rubrica in sovraimpressione. */
+html body.di-public-ui.journal-page #pilots-mode{display:block;width:100%;box-sizing:border-box;margin-top:6px}
+html body.di-public-ui.journal-page #pilots-view-all{width:100%;box-sizing:border-box;white-space:normal}
+html body.di-public-ui.journal-page #community-pilots{max-height:none!important;overflow:visible!important}
+html body.di-public-ui.journal-page #community-pilots li{padding:14px 0}
+html body.di-public-ui.journal-page #pilots-mode-note{color:#8cdce8!important;font-size:13px!important}
+html body.di-public-ui #pilots-dialog{box-sizing:border-box;width:min(900px,calc(100% - 32px));max-width:900px;max-height:85dvh;padding:24px;overflow:hidden;border:1px solid #4aa5ba;background:linear-gradient(135deg,#061f30,#031522);color:#dcecf4}
+html body.di-public-ui #pilots-dialog[open]{display:flex;flex-direction:column;gap:12px}
+html body.di-public-ui #pilots-dialog::backdrop{background:#000d16cc;backdrop-filter:blur(5px)}
+html body.di-public-ui .pilots-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:16px}
+html body.di-public-ui .pilots-dialog-head h2{margin:0;text-transform:uppercase}
+html body.di-public-ui #pilots-dialog-note{margin:0;color:#9ecbd7;flex:none}
+html body.di-public-ui #pilots-search{width:100%;box-sizing:border-box;flex:none}
+html body.di-public-ui #pilots-dialog label{margin:0}
+html body.di-public-ui #pilots-dialog-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:12px;list-style:none;padding:2px;margin:0;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:#4089a5 #061c2d}
+html body.di-public-ui #pilots-dialog-list li{display:flex;align-items:center;gap:14px;min-width:0;padding:16px;border:1px solid #295d73;border-radius:4px;background:#041b2b}
+html body.di-public-ui #pilots-dialog-list li>span:last-child{min-width:0;overflow-wrap:anywhere}
+html body.di-public-ui #pilots-dialog-list strong{display:block;font:600 22px/1.25 'DI Rajdhani',sans-serif;color:#e2f2f9}
+html body.di-public-ui #pilots-dialog-list small{display:block;margin-top:5px;font:400 13px/1.5 system-ui,sans-serif;color:#a7c5d3}
+html body.di-public-ui #pilots-dialog-status{margin:0;flex:none}
+html body.di-public-ui .pilots-pagination{display:flex;align-items:center;justify-content:space-between;gap:16px;flex:none;border-top:1px solid #295d73;padding-top:14px}
+html body.di-public-ui #pilots-page{font:400 14px/1.5 system-ui,sans-serif;text-align:center}
+html body.di-public-ui #pilots-dialog button:disabled{opacity:.45}
+@media(max-width:640px){html body.di-public-ui #pilots-dialog{padding:16px;max-height:90dvh;width:calc(100% - 20px)}html body.di-public-ui #pilots-dialog-list{grid-template-columns:minmax(0,1fr)}html body.di-public-ui .pilots-dialog-head{align-items:flex-start}html body.di-public-ui .pilots-dialog-head h2{font-size:24px!important}html body.di-public-ui .pilots-pagination{gap:8px;flex-wrap:wrap}html body.di-public-ui #pilots-dialog-list li{padding:12px}}
