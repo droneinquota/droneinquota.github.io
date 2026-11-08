@@ -211,3 +211,22 @@ html body.di-public-ui.journal-page #pilots-dialog-list li{padding:12px;gap:12px
 html body.di-public-ui.journal-page #pilots-dialog .pilots-pagination{flex-wrap:wrap;gap:10px}
 html body.di-public-ui.journal-page #pilots-dialog #pilots-page{order:-1;width:100%}
 html body.di-public-ui.journal-page #pilots-dialog #pilots-load{width:100%;white-space:normal}
+
+/* Elenco aperto: più larghezza, due colonne e pagine senza scrollbar interne. */
+html:has(body.journal-page #pilots-dialog:not([hidden])){height:auto!important;overflow:auto!important}
+html body.di-public-ui.journal-page:has(#pilots-dialog:not([hidden])){height:auto!important;min-height:100dvh!important;overflow:visible!important;display:flex!important;flex-direction:column}
+html body.di-public-ui.journal-page:has(#pilots-dialog:not([hidden]))>main{max-width:1480px!important;flex:1}
+html body.di-public-ui.journal-page:has(#pilots-dialog:not([hidden])) .layout{grid-template-columns:minmax(280px,.85fr) minmax(660px,1.15fr)!important;grid-template-rows:auto!important;align-items:start!important}
+html body.di-public-ui.journal-page:has(#pilots-dialog:not([hidden])) .journal-right-column{height:auto!important;max-height:none!important;overflow:visible!important}
+html body.di-public-ui.journal-page:has(#pilots-dialog:not([hidden])) .journal-community-panel{height:auto!important;max-height:none!important;overflow:visible!important}
+html body.di-public-ui.journal-page #pilots-dialog-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;overflow:visible!important;max-height:none!important}
+html body.di-public-ui.journal-page #pilots-inline-close{display:none!important}
+html body.di-public-ui.journal-page #pilots-dialog .pilots-dialog-head{margin:0!important}
+html body.di-public-ui.journal-page #pilots-dialog-list li{padding:12px!important;gap:12px!important}
+html body.di-public-ui.journal-page #pilots-dialog-list strong{font-size:20px!important}
+html body.di-public-ui.journal-page #pilots-dialog-list small{font-size:12px!important}
+html body.di-public-ui.journal-page #pilots-dialog .pilots-pagination{flex-wrap:nowrap!important;align-items:center}
+html body.di-public-ui.journal-page #pilots-dialog #pilots-page{order:0!important;width:auto!important;flex:1}
+html body.di-public-ui.journal-page:has(#pilots-dialog:not([hidden])) .community-pilots-panel>p.media-note:last-child{display:none!important}
+@media(max-width:1200px){html body.di-public-ui.journal-page:has(#pilots-dialog:not([hidden])) .layout{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:20px!important}html body.di-public-ui.journal-page:has(#pilots-dialog:not([hidden])) .journal-right-column{grid-row:1!important;order:-1!important}html body.di-public-ui.journal-page:has(#pilots-dialog:not([hidden])) .journal-community-panel{grid-row:2!important}}
+@media(max-width:600px){html body.di-public-ui.journal-page #pilots-dialog-list{grid-template-columns:minmax(0,1fr)!important}html body.di-public-ui.journal-page #pilots-dialog .pilots-pagination{flex-wrap:wrap!important}}
