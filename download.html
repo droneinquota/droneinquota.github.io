@@ -74,11 +74,11 @@ footer{position:fixed;bottom:0;left:0;right:0;max-width:none;padding:8px 12px;te
 <body class="di-centered-copy di-centered-download di-unified-ui di-public-ui">
 <header><a class="brand" href="./#progetto" aria-label="Drone in Quota — Home"><img class="di-site-brand" src="assets/brand-drone-in-quota-wide.svg" alt="Drone in Quota"></a><nav aria-label="Navigazione"><a href="./#progetto">Home</a><a href="./#commenti">Community</a></nav></header>
 <main class="download-page">
-<p class="eyebrow">Drone Italia per Android</p><h1>Pronto per il prossimo volo?</h1>
+<p class="eyebrow">Drone Italia per Android</p><h1>Scarica Drone Italia</h1>
 <p class="intro">APK per Android</p>
-<section class="latest" id="latest" aria-labelledby="latest-title"><p class="badge">Ultima versione</p><h2 id="latest-title">Controllo dei download disponibili…</h2><p class="empty">Attendi qualche istante.</p></section>
+<div class="di-download-cards"><section class="di-latest-panel" aria-labelledby="di-latest-panel-title"><h2 id="di-latest-panel-title">Ultima versione</h2><section class="latest" id="latest" aria-labelledby="latest-title"><p class="badge">Ultima versione</p><h2 id="latest-title">Controllo dei download disponibili…</h2><p class="empty">Attendi qualche istante.</p></section>
 <p class="status" id="download-status" role="status" aria-live="polite"></p>
-<section class="history" aria-labelledby="history-title"><h2 id="history-title">Versioni precedenti</h2><h3 class="di-archive-name">Drone Italia</h3><div id="previous"><p class="empty">Caricamento dell’archivio…</p></div></section>
+</section><section class="history" aria-labelledby="history-title"><h2 id="history-title">Versioni precedenti</h2><div id="previous"><p class="empty">Caricamento dell’archivio…</p></div></section></div>
 
 <noscript><p>Per consultare l’elenco aggiornato dei file abilita JavaScript oppure <a href="https://github.com/dura1472p-cpu/Drone-Italia-download/releases" target="_blank" rel="noopener noreferrer">apri le distribuzioni su GitHub</a>.</p></noscript>
 </main><footer aria-label="Informazioni sul sito">Drone in Quota · Community<span data-admin-entry hidden> · <a href="admin.html" style="color:inherit">Area amministratore</a></span></footer>
@@ -128,8 +128,8 @@ function releaseCard(r){
   const title=el('div',undefined,'di-latest-title'),heading=el('h2','Drone Italia');heading.id='latest-title';
   title.append(heading,el('span','Ultima','badge'));latest.append(title);
   for(const a of r.files){
-   latest.append(releaseMeta(r,a));
-   const link=el('a','Scarica APK','download');link.prepend(downloadIcon());link.href=safeUrl(a.browser_download_url,true);link.setAttribute('aria-label','Scarica '+a.name);latest.append(link);
+   const row=el('div',undefined,'di-latest-file');row.append(releaseMeta(r,a));
+   const link=el('a',undefined,'download');link.append(downloadIcon());link.href=safeUrl(a.browser_download_url,true);link.setAttribute('aria-label','Scarica APK '+a.name);link.title='Scarica APK '+a.name;row.append(link);latest.append(row);
   }
   if(r.body&&typeof r.body==='string'){const button=el('button','Novità di questa versione','di-release-notes-trigger');button.type='button';button.setAttribute('aria-haspopup','dialog');button.addEventListener('click',()=>showReleaseNotes(r,button));latest.append(button);}
   return latest;
@@ -268,5 +268,6 @@ html body .di-release-dialog-version{color:#7bdbed;font-size:16px;text-align:lef
 html body .di-release-dialog-body{white-space:pre-wrap;overflow-wrap:anywhere;text-align:left;font:16px/1.65 system-ui,sans-serif}
 html body .di-release-notes-trigger:focus-visible,html body .di-release-close:focus-visible{outline:2px solid #83eeff;outline-offset:4px}
 @media(max-width:600px){html body dialog.di-release-dialog{padding:18px}html body .di-release-dialog-head h2{font-size:21px}}
-</style><style>html body .di-release-dialog-body{white-space:normal}html body .di-release-dialog-body h3{font:700 18px/1.4 system-ui,sans-serif;text-align:left;margin:20px 0 8px;color:#73d8e9;text-transform:none;letter-spacing:0}html body .di-release-dialog-body ul{padding-left:22px;margin:8px 0 16px}html body .di-release-dialog-body p{font:16px/1.65 system-ui,sans-serif;text-align:left;margin:14px 0 0}</style><link rel="stylesheet" href="assets/site-ui-v2.css"><script src="assets/site-public-v3.js?v=finish-2" defer></script><link rel="stylesheet" href="assets/site-public-v3.css?v=finish-2"></body></html>
+</style><style>html body .di-release-dialog-body{white-space:normal}html body .di-release-dialog-body h3{font:700 18px/1.4 system-ui,sans-serif;text-align:left;margin:20px 0 8px;color:#73d8e9;text-transform:none;letter-spacing:0}html body .di-release-dialog-body ul{padding-left:22px;margin:8px 0 16px}html body .di-release-dialog-body p{font:16px/1.65 system-ui,sans-serif;text-align:left;margin:14px 0 0}</style><link rel="stylesheet" href="assets/site-ui-v2.css"><script src="assets/site-public-v3.js?v=finish-2" defer></script><link rel="stylesheet" href="assets/site-public-v3.css?v=compact-3"></body></html>
+
 
