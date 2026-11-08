@@ -141,6 +141,20 @@ html body.di-public-ui .di-download-cards #latest.di-latest-compact a.download,h
 html body.di-public-ui :is(#download-page,.download-page){max-width:760px!important;padding:18px!important}
 html body.di-public-ui .di-download-cards .di-latest-file,html body.di-public-ui .di-download-cards #previous .di-archive-row{gap:28px!important}
 html body.di-public-ui .di-download-cards #previous .di-archive-row{box-sizing:border-box;width:fit-content!important;max-width:100%!important}
-html body.di-public-ui .di-download-cards #previous .di-archive-release:last-child .di-archive-row:last-child{border-bottom:0!important}
+
 html body.di-public-ui :is(#download-page,.download-page) .di-download-cards>.di-latest-panel,html body.di-public-ui :is(#download-page,.download-page) .di-download-cards>.history{padding:14px!important}
 @media(max-width:760px){html body.di-public-ui :is(#download-page,.download-page){padding:16px!important}html body.di-public-ui .di-download-cards .di-latest-file,html body.di-public-ui .di-download-cards #previous .di-archive-row{gap:24px!important}}
+
+/* I bordi terminano con i comandi; le schede abbracciano il contenuto. */
+@media(min-width:821px){
+html body.di-public-ui :is(#download-page,.download-page){width:fit-content!important;max-width:calc(100% - 32px)!important}
+html body.di-public-ui .di-download-cards{width:fit-content;max-width:100%;grid-template-columns:max-content max-content!important}
+}
+html body.di-public-ui .di-download-cards #latest.di-latest-compact{width:fit-content!important;max-width:100%!important}
+html body.di-public-ui .di-download-cards #latest.di-latest-compact .di-latest-file{width:fit-content!important;max-width:100%!important}
+html body.di-public-ui .di-download-cards #latest.di-latest-compact .di-release-notes-trigger{width:100%!important;box-sizing:border-box!important}
+html body.di-public-ui .di-download-cards #previous .di-archive-row{border-bottom:1px solid #29768a!important}
+@media(max-width:820px){
+html body.di-public-ui :is(#download-page,.download-page){width:calc(100% - 24px)!important;max-width:480px!important}
+html body.di-public-ui .di-download-cards{width:100%;grid-template-columns:minmax(0,1fr)!important}
+}
