@@ -856,22 +856,22 @@ show(location.hash.slice(1)||'progetto');
   send.disabled=!hosted||!authenticated||!commentToken||commentBusy||sessionPending||blocked;
   send.textContent=replyTarget===null?'Pubblica commento':'Pubblica risposta';
   document.getElementById('cm-cancel-reply').hidden=replyTarget===null;
-  document.getElementById('di-modal-title').textContent=blocked?(publicationBlock.permanent?'Account bloccato':'Pubblicazione sospesa'):(replyTarget===null?'Lascia un commento':'Rispondi al commento');
+  document.getElementById('di-modal-title').textContent=blocked?(publicationBlock.permanent?'Account bloccato':publicationBlock.message.includes('fino al')?'Pubblicazione sospesa':'Pubblicazione non disponibile'):(replyTarget===null?'Lascia un commento':'Rispondi al commento');
  }
  function accountBanMessage(data){
   if(data.banned!==true)return null;
-  if(data.expires_at===null)return 'Il tuo account è bloccato in modo permanente. Non puoi pubblicare commenti o risposte. Per chiarimenti puoi scrivere a droneinquota@outlook.com.';
+  if(data.banType==='permanent'||data.expires_at===null)return 'Il tuo account è bloccato in modo permanente. Non puoi pubblicare commenti o risposte. Per chiarimenti puoi scrivere a droneinquota@outlook.com.';
   const expiry=typeof data.expires_at==='string'?new Date(data.expires_at):null;
   if(expiry&&Number.isFinite(expiry.getTime())){
    const day=new Intl.DateTimeFormat('it-IT',{day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Rome'}).format(expiry);
    const time=new Intl.DateTimeFormat('it-IT',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Rome'}).format(expiry);
    return 'Il tuo account è sospeso fino al '+day+' alle '+time+'. Fino ad allora non puoi pubblicare commenti o risposte.';
   }
-  return 'Il tuo account è sospeso. Al momento non puoi pubblicare commenti o risposte.';
+  return 'Il tuo account non può pubblicare commenti o risposte. Per chiarimenti puoi scrivere a droneinquota@outlook.com.';
  }
  function showPublicationBlock(data){
   if(data.banned!==true)return;
-  publicationBlock={message:accountBanMessage(data),permanent:data.expires_at===null};
+  publicationBlock={message:accountBanMessage(data),permanent:data.banType==='permanent'||data.expires_at===null};
   renderAuth();
   if(!document.getElementById('di-comment-modal').hidden)document.getElementById('di-modal-close').focus();
  }
@@ -905,7 +905,7 @@ show(location.hash.slice(1)||'progetto');
    authenticated=data.authenticated===true;
    if(authenticated&&data.banned===true)showPublicationBlock(data);else publicationBlock=null;
    if(!authenticated){saveSession('');sessionIssue='rejected';}
-   authStatus.textContent=authenticated?(data.banned===true?'Email verificata. Il tuo account è sospeso: non puoi pubblicare commenti o risposte.':'Email verificata. Puoi commentare e rispondere.'):'L’accesso salvato non è più riconosciuto dal server. Serve un nuovo link.';
+   authStatus.textContent=authenticated?(data.banned===true?publicationBlock.message:'Email verificata. Puoi commentare e rispondere.'):'L’accesso salvato non è più riconosciuto dal server. Serve un nuovo link.';
   }catch(_){syncStoredSession();if(checkedSession===session){authenticated=false;authStatus.textContent='Impossibile verificare la sessione. Riprova con “Verifica sessione”.';check.hidden=false;}}
   finally{sessionPending=false;renderAuth();if(checkedSession!==session&&session)verifySession();else if(session&&!authenticated)check.hidden=false;}
  }
