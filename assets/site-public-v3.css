@@ -126,3 +126,13 @@ html body.di-public-ui .di-download-cards a:focus-visible{outline:2px solid #a0e
 html body.di-public-ui #menu.menu :is(#di-download-link,#di-journal-link,#di-support-link,button,a):is(:hover,.active,[aria-current]:not([aria-current=false]),[aria-pressed=true],[aria-selected=true],[aria-expanded=true]),
 html body.di-public-ui #app-dropdown-panel button:is(:hover,.active,[aria-current]:not([aria-current=false])),
 html body.di-public-ui :is(.top,.di-support-header,header)>nav a:is(:hover,.active,[aria-current]:not([aria-current=false])){background:linear-gradient(130deg,#155575,#10344f)!important;color:#eefaff!important;border-color:#a0edfa!important;box-shadow:inset 0 0 0 1px #96eaff22!important}
+
+/* Spaziatura del Download: sottotitolo centrato e comandi separati dai dati. */
+html body.di-public-ui :is(#download-page,.download-page){max-width:800px!important;padding:20px!important}
+html body.di-public-ui :is(#download-page,.download-page)>h1,html body.di-public-ui :is(#download-page,.download-page)>.intro{box-sizing:border-box;width:100%!important;max-width:none!important;text-align:center!important;margin-left:auto!important;margin-right:auto!important}
+html body.di-public-ui :is(#download-page,.download-page)>.intro{justify-content:center!important;align-self:center!important;margin-bottom:22px!important}
+html body.di-public-ui .di-download-cards{align-items:stretch!important;gap:16px!important}
+html body.di-public-ui :is(#download-page,.download-page) .di-download-cards>.di-latest-panel,html body.di-public-ui :is(#download-page,.download-page) .di-download-cards>.history{padding:16px!important;height:auto!important}
+html body.di-public-ui .di-download-cards .di-latest-file,html body.di-public-ui .di-download-cards #previous .di-archive-row{gap:20px!important}
+html body.di-public-ui .di-download-cards #latest.di-latest-compact a.download,html body.di-public-ui .di-download-cards #previous a.di-archive-download{box-sizing:border-box!important;align-items:center!important;justify-content:center!important;align-self:center!important}
+@media(max-width:760px){html body.di-public-ui :is(#download-page,.download-page){padding:16px!important}html body.di-public-ui .di-download-cards{gap:14px!important}html body.di-public-ui .di-download-cards .di-latest-file,html body.di-public-ui .di-download-cards #previous .di-archive-row{gap:16px!important}}
