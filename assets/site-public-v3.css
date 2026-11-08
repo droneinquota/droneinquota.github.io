@@ -136,3 +136,11 @@ html body.di-public-ui :is(#download-page,.download-page) .di-download-cards>.di
 html body.di-public-ui .di-download-cards .di-latest-file,html body.di-public-ui .di-download-cards #previous .di-archive-row{gap:20px!important}
 html body.di-public-ui .di-download-cards #latest.di-latest-compact a.download,html body.di-public-ui .di-download-cards #previous a.di-archive-download{box-sizing:border-box!important;align-items:center!important;justify-content:center!important;align-self:center!important}
 @media(max-width:760px){html body.di-public-ui :is(#download-page,.download-page){padding:16px!important}html body.di-public-ui .di-download-cards{gap:14px!important}html body.di-public-ui .di-download-cards .di-latest-file,html body.di-public-ui .di-download-cards #previous .di-archive-row{gap:16px!important}}
+
+/* Rifinitura delle righe: separatori limitati al contenuto, nessuna linea finale. */
+html body.di-public-ui :is(#download-page,.download-page){max-width:760px!important;padding:18px!important}
+html body.di-public-ui .di-download-cards .di-latest-file,html body.di-public-ui .di-download-cards #previous .di-archive-row{gap:28px!important}
+html body.di-public-ui .di-download-cards #previous .di-archive-row{box-sizing:border-box;width:fit-content!important;max-width:100%!important}
+html body.di-public-ui .di-download-cards #previous .di-archive-release:last-child .di-archive-row:last-child{border-bottom:0!important}
+html body.di-public-ui :is(#download-page,.download-page) .di-download-cards>.di-latest-panel,html body.di-public-ui :is(#download-page,.download-page) .di-download-cards>.history{padding:14px!important}
+@media(max-width:760px){html body.di-public-ui :is(#download-page,.download-page){padding:16px!important}html body.di-public-ui .di-download-cards .di-latest-file,html body.di-public-ui .di-download-cards #previous .di-archive-row{gap:24px!important}}
