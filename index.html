@@ -903,7 +903,7 @@ show(location.hash.slice(1)||'progetto');
   body.textContent=String(c.body||'');card.append(name,date,body);
   const replies=document.createElement('div'),toggle=document.createElement('button'),reply=document.createElement('button'),state=document.createElement('small');
   replies.className='cm-reply-list';toggle.type=reply.type='button';toggle.className=reply.className='cm-reply-toggle';
-  toggle.textContent='Mostra risposte';reply.textContent='↳ Rispondi';replies.hidden=true;
+  toggle.textContent='Mostra risposte';reply.textContent='Rispondi';replies.hidden=true;
   let loaded=false,busy=false;
   toggle.addEventListener('click',async()=>{
    if(busy)return;
